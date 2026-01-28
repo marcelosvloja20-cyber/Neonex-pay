@@ -19,19 +19,29 @@
     <button id="connectBtn">Conectar Carteira</button>
 
     <div id="walletInfo" class="hidden">
-      <div id="sendBox" class="hidden">
-  <h3>Enviar Pagamento</h3>
 
-  <input id="to" placeholder="Endereço destino" />
-  <input id="amount" placeholder="Valor (ETH)" />
+  <div id="sendBox" class="hidden">
+    <h3>Enviar Pagamento</h3>
+    <input id="to" placeholder="Endereço destino" />
+    <input id="amount" placeholder="Valor (ETH)" />
+    <button id="sendBtn">Enviar</button>
+  </div>
 
-  <button id="sendBtn">Enviar</button>
-      </div>
-      
-      <p><strong>Endereço:</strong> <span id="address"></span></p>
-      <p><strong>Saldo:</strong> <span id="balance"></span></p>
-      <p><strong>Rede:</strong> <span id="network"></span></p>
-    </div>
+  <div id="qrBox" class="hidden">
+    <h3>Receber Pagamento</h3>
+    <input id="qrAmount" placeholder="Valor sugerido (ETH)" />
+    <button id="qrBtn">Gerar QR Code</button>
+    <div id="qrcode"></div>
+    <p class="hint">Cliente escaneia e paga direto pela carteira</p>
+  </div>
+
+  <p><strong>Endereço:</strong> <span id="address"></span></p>
+  <p><strong>Saldo:</strong> <span id="balance"></span></p>
+  <p><strong>Rede:</strong> <span id="network"></span></p>
+
+</div>
+
+ 
   </div>
 
   <script src="app.js"></script>
