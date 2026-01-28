@@ -2,21 +2,43 @@ body {
   margin: 0;
   background: #000;
   color: #ffd400;
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  max-width: 400px;
+  margin: 80px auto;
   text-align: center;
-  padding: 40px;
 }
 
 h1 {
-  font-size: 2.2rem;
+  font-size: 32px;
+  margin-bottom: 10px;
 }
 
 button {
   background: #ffd400;
   color: #000;
   border: none;
-  padding: 14px 26px;
+  padding: 14px 22px;
   font-size: 16px;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+#walletInfo {
+  margin-top: 20px;
+  text-align: left;
+  background: #111;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.hidden {
+  display: none;
 }
