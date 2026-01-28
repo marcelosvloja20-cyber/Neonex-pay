@@ -50,3 +50,20 @@ input {
   border: none;
 }
 
+#qrcode {
+  margin-top: 15px;
+  padding: 10px;
+  background: #fff;
+  display: inline-block;
+  border-radius: 10px;
+}
+
+.hint {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 8px;
+}
+
+#qrBox {
+  margin-top: 25px;
+}
