@@ -16,7 +16,8 @@ const addressSpan = document.getElementById("address");
 const balanceSpan = document.getElementById("balance");
 const networkSpan = document.getElementById("network");
 
-connectBtn.onclick = async () => {
+connectBtn.onclick = async () =>document.getElementById("sendBox").classList.remove("hidden");
+ {
   if (!window.ethereum) {
     return;
   }
