@@ -97,17 +97,22 @@ https://etherscan.io/tx/${tx.hash}`);
   }
 };
 
-/* ===== GERAR QR CODE ===== */
+/* ===== GERAR QR CODE PRO MULTICHAIN ===== */
 
-qrBtn.onclick = () => {
-  const amount = document.getElementById("qrAmount").value.trim();
+qrBtn.onclick = async () => {
   if (!userAddress) {
     alert("Conecte a carteira primeiro");
     return;
   }
 
+  const amount = document.getElementById("qrAmount").value.trim();
+  const network = await provider.getNetwork();
+
+  const chainId = network.chainId.toString();
+
   const valuePart = amount ? `?value=${ethers.parseEther(amount)}` : "";
-  const qrUrl = `ethereum:${userAddress}@1${valuePart}`;
+
+  const qrUrl = `ethereum:${userAddress}@${chainId}${valuePart}`;
 
   const qrContainer = document.getElementById("qrcode");
   qrContainer.replaceChildren();
