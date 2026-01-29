@@ -17,7 +17,7 @@ const USDT_ABI = [
 ];
 
 // 👉 COLOQUE SEU ENDEREÇO AQUI (wallet que recebe os pagamentos)
-const RECEIVER = "SEU_ENDERECO_PUBLICO_AQUI";
+const RECEIVER = "0xd8deaef57da7b8804fecfbfbaeb31ccd335749f5";
 
 async function connectWallet() {
   if (!window.ethereum) {
