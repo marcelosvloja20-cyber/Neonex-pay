@@ -7,16 +7,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
 
 <style>
+/* ========================== */
+/* BODY E TIPOGRAFIA           */
+/* ========================== */
 body, html {
   margin:0;
   padding:0;
-  font-family: 'Arial', Helvetica, sans-serif;
-  background:#000;
-  color:#ffd700;
+  font-family:'Arial', Helvetica, sans-serif;
+  background:#0B0B0F;
+  color:#FFFFFF;
   overflow-x:hidden;
 }
 
-/* Landing central */
+/* ========================== */
+/* LANDING CENTRAL             */
+/* ========================== */
 .main {
   display:flex;
   flex-direction:column;
@@ -27,11 +32,14 @@ body, html {
   padding:20px;
 }
 
-/* Logo NEONEX */
+/* ========================== */
+/* LOGO E MENSAGEM             */
+/* ========================== */
 .brand-symbol {
   font-family:'Montserrat', sans-serif;
   font-size:60px;
   font-weight:900;
+  color:#00E5FF;
   margin-bottom:10px;
 }
 
@@ -41,9 +49,12 @@ body, html {
   max-width:320px;
   line-height:1.5;
   text-align:center;
+  color:#FFFFFF;
 }
 
-/* Quick actions */
+/* ========================== */
+/* QUICK ACTIONS               */
+/* ========================== */
 .quick-actions {
   display:flex;
   justify-content:center;
@@ -54,24 +65,30 @@ body, html {
   flex:1;
   padding:16px;
   border-radius:12px;
-  border:1px solid #ffd700;
-  background:#111;
-  color:#ffd700;
+  border:1px solid #00E5FF;
+  background:#0B0B0F;
+  color:#00E5FF;
   font-weight:bold;
   font-size:14px;
   cursor:pointer;
   transition:0.2s;
 }
-.quick-actions button:hover { background:#222; }
+.quick-actions button:hover {
+  background:linear-gradient(135deg,#00E5FF,#7B61FF);
+  color:#0B0B0F;
+  transform:scale(1.05);
+}
 
-/* Sidebar */
+/* ========================== */
+/* SIDEBAR                     */
+/* ========================== */
 .sidebar {
   position: fixed;
   top:0; left:-360px;
   width:360px;
   height:100%;
-  background:#111;
-  border-right:2px solid #ffd700;
+  background:#0B0B0F;
+  border-right:2px solid #00E5FF;
   padding:20px;
   box-sizing:border-box;
   transition:left 0.3s ease;
@@ -84,8 +101,8 @@ body, html {
 .toggle-btn {
   position: fixed;
   top:15px; left:15px;
-  background:#ffd700;
-  color:#000;
+  background:#00E5FF;
+  color:#0B0B0F;
   padding:12px 14px;
   border-radius:12px;
   font-weight:bold;
@@ -93,17 +110,22 @@ body, html {
   z-index:1000;
 }
 
-/* Inputs e botões da sidebar */
+/* Inputs e botões */
 input, select {
   width:100%;
   padding:12px;
-  background:#000;
-  border:1px solid #ffd700;
+  background:#0B0B0F;
+  border:1px solid #00E5FF;
   border-radius:10px;
-  color:#ffd700;
+  color:#FFFFFF;
   font-size:14px;
   margin-top:10px;
 }
+input:focus, select:focus {
+  outline:none;
+  box-shadow:0 0 8px #00E5FF;
+}
+
 button.sidebar-btn {
   width:100%;
   padding:12px;
@@ -113,13 +135,17 @@ button.sidebar-btn {
   font-size:14px;
   font-weight:bold;
   cursor:pointer;
-  background:linear-gradient(135deg,#ffd700,#ffb700);
-  color:#000;
+  background:linear-gradient(135deg,#00E5FF,#7B61FF);
+  color:#0B0B0F;
   transition:transform 0.2s ease;
 }
-button.sidebar-btn:hover{transform:scale(1.05);}
+button.sidebar-btn:hover {
+  transform:scale(1.05);
+}
 
-/* Progress */
+/* ========================== */
+/* PROGRESS BAR                */
+/* ========================== */
 .progress-bar {
   width:100%;
   height:10px;
@@ -131,94 +157,102 @@ button.sidebar-btn:hover{transform:scale(1.05);}
 .progress-fill {
   height:100%;
   width:0%;
-  background:linear-gradient(90deg,#ffd700,#ffb700);
+  background:linear-gradient(90deg,#00E5FF,#7B61FF);
   transition:width 0.8s ease;
 }
 
-/* QR + extrato */
+/* ========================== */
+/* QR + HISTÓRICO              */
+/* ========================== */
 #qrcode{margin-top:15px;}
-#walletAddress{font-size:12px;margin-top:8px;word-break:break-all;color:#aaa;}
-#status{margin-top:10px;font-size:12px;color:#fff;}
+#walletAddress{font-size:12px;margin-top:8px;word-break:break-all;color:#7B61FF;}
+#status{margin-top:10px;font-size:12px;color:#FFFFFF;}
 #history{margin-top:15px;text-align:left;}
-.history-card{background:#000;padding:10px;border-radius:10px;margin-bottom:8px;}
-#chartContainer{margin-top:15px;background:#000;padding:10px;border-radius:10px;}
+.history-card{
+  background:#0B0B0F;
+  color:#FFFFFF;
+  border:1px solid #7B61FF;
+  padding:10px;
+  border-radius:10px;
+  margin-bottom:8px;
+}
 
-/* Toast */
+/* ========================== */
+/* TOAST                        */
+/* ========================== */
 .toast {
   position: fixed;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #ffd700;
-  color: #000;
-  padding: 10px 18px;
-  border-radius: 14px;
-  font-weight: bold;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.4s ease;
-  box-shadow:0 0 12px rgba(255,215,0,0.6);
+  background:#00E5FF;
+  color:#0B0B0F;
+  padding:10px 18px;
+  border-radius:14px;
+  font-weight:bold;
+  opacity:0;
+  pointer-events:none;
+  transition:all 0.4s ease;
+  box-shadow:0 0 12px rgba(0,229,255,0.6);
 }
 .toast.show {opacity:1; bottom:35px;}
 </style>
 </head>
 
 <body>
-  <!-- Toggle sidebar -->
-  <div class="toggle-btn" id="toggleSidebar">Menu</div>
+<!-- Toggle sidebar -->
+<div class="toggle-btn" id="toggleSidebar">Menu</div>
 
-  <!-- Landing minimalista -->
-  <div class="main">
-    <div class="brand-symbol">NEONEX</div>
-    <div class="brand-message">
-      Bem-vindo à NEONEX.<br>
-      Pagamentos P2P instantâneos,<br>
-      0% taxas, você no controle.<br>
-      Sem bancos. Sem intermediários.<br>
-      Apenas você e sua crypto.
-    </div>
-
-    <div class="quick-actions">
-      <button onclick="quickSend()">Enviar</button>
-      <button onclick="quickReceive()">Receber</button>
-      <button onclick="quickSwap()">Troca</button>
-    </div>
+<!-- Landing minimalista -->
+<div class="main">
+  <div class="brand-symbol">NEONEX</div>
+  <div class="brand-message">
+    Bem-vindo à NEONEX.<br>
+    Pagamentos P2P instantâneos,<br>
+    0% taxas, você no controle.<br>
+    Sem bancos. Sem intermediários.<br>
+    Apenas você e sua crypto.
   </div>
 
-  <!-- Sidebar funcional -->
-  <div class="sidebar" id="sidebar">
-    <h2>NEONEX P2P / Tax Free</h2>
-
-    <button class="sidebar-btn" id="connectWallet">Conectar Carteira</button>
-
-    <select id="tokenSelect">
-      <option value="USDT_ARB">USDT Arbitrum</option>
-      <option value="USDT_POLY">USDT Polygon</option>
-      <option value="USDC_BASE">USDC Base</option>
-      <option value="NEX">NEOX (Token NEONEX)</option>
-    </select>
-
-    <input id="amount" placeholder="Valor">
-
-    <button class="sidebar-btn" id="sendPayment">Pagar Agora</button>
-
-    <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
-
-    <div id="qrcode"></div>
-    <p id="walletAddress"></p>
-    <p id="status"></p>
-
-    <h3>Extrato</h3>
-    <div id="history"></div>
-    <div id="chartContainer"><canvas id="paymentChart"></canvas></div>
+  <div class="quick-actions">
+    <button onclick="quickSend()">Enviar</button>
+    <button onclick="quickReceive()">Receber</button>
+    <button onclick="quickSwap()">Troca</button>
   </div>
+</div>
 
-  <div id="toast" class="toast"></div>
+<!-- Sidebar funcional -->
+<div class="sidebar" id="sidebar">
+  <h2>NEONEX P2P / Tax Free</h2>
 
-  <script src="https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="app.js"></script>
+  <button class="sidebar-btn" id="connectWallet">Conectar Carteira</button>
+
+  <select id="tokenSelect">
+    <option value="USDT_ARB">USDT Arbitrum</option>
+    <option value="USDT_POLY">USDT Polygon</option>
+    <option value="USDC_BASE">USDC Base</option>
+    <option value="NEX">NEOX (Token NEONEX)</option>
+  </select>
+
+  <input id="amount" placeholder="Valor">
+
+  <button class="sidebar-btn" id="sendPayment">Pagar Agora</button>
+
+  <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+
+  <div id="qrcode"></div>
+  <p id="walletAddress"></p>
+  <p id="status"></p>
+
+  <h3>Extrato</h3>
+  <div id="history"></div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
    
