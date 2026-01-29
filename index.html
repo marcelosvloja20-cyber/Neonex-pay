@@ -1,69 +1,198 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEONEX</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NEONEX PAY — P2P Zero Taxas</title>
+
+  <style>
+    :root {
+      --bg-dark: #0b0b0f;
+      --neon-blue: #00e5ff;
+      --neon-purple: #7b61ff;
+      --text-main: #ffffff;
+      --text-muted: #a0a0b5;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #141420, var(--bg-dark));
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 420px;
+      width: 100%;
+      background: linear-gradient(180deg, #111120, #0b0b0f);
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: 0 0 40px rgba(0,229,255,0.15);
+      border: 1px solid rgba(123,97,255,0.2);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 20px;
+      color: #000;
+    }
+
+    .logo-text {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .logo-text span {
+      color: var(--neon-blue);
+    }
+
+    h1 {
+      font-size: 26px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    h1 span {
+      color: var(--neon-blue);
+    }
+
+    p {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .feature {
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      padding: 14px 8px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .feature strong {
+      display: block;
+      font-size: 18px;
+      color: var(--neon-blue);
+      margin-bottom: 4px;
+    }
+
+    .feature span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px;
+      border-radius: 16px;
+      border: none;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+      color: #000;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid rgba(0,229,255,0.4);
+      color: var(--neon-blue);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(0,229,255,0.3);
+    }
+
+    footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 11px;
+      color: #666;
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- Toggle Sidebar -->
-<div class="toggle-btn" id="toggleSidebar">☰</div>
+  <div class="container">
 
-<!-- Landing Central -->
-<div class="main">
-  <div class="brand-symbol">NEONEX</div>
-  <div class="brand-message">
-    Bem-vindo à NEONEX.<br>
-    Pagamentos P2P instantâneos,<br>
-    0% taxas, você no controle.<br>
-    Sem bancos. Sem intermediários.<br>
-    Apenas você e sua crypto.
-  </div>
+    <div class="logo">
+      <div class="logo-icon">N</div>
+      <div class="logo-text">NEONEX <span>PAY</span></div>
+    </div>
 
-  <!-- Quick Actions -->
-  <div class="quick-actions">
-    <button onclick="quickSend()">Enviar</button>
-    <button onclick="quickReceive()">Receber</button>
-    <button onclick="quickSwap()">Troca</button>
-  </div>
-</div>
+    <h1>
+      Pagamentos P2P <span>instantâneos</span><br/>
+      com <span>0% taxas</span>
+    </h1>
 
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
-  <h2>NEONEX P2P / Tax Free</h2>
+    <p>
+      Você no controle total da sua crypto.<br/>
+      Sem bancos. Sem intermediários.<br/>
+      Cold wallet por design.
+    </p>
 
-  <button class="sidebar-btn" id="connectWallet">Conectar Carteira</button>
+    <div class="features">
+      <div class="feature">
+        <strong>⚡</strong>
+        <span>P2P Rápido</span>
+      </div>
+      <div class="feature">
+        <strong>0%</strong>
+        <span>Zero Taxas</span>
+      </div>
+      <div class="feature">
+        <strong>🔒</strong>
+        <span>Cold Wallet</span>
+      </div>
+    </div>
 
-  <select id="tokenSelect">
-    <option value="USDT_ARB">USDT Arbitrum</option>
-    <option value="USDT_POLY">USDT Polygon</option>
-    <option value="USDC_BASE">USDC Base</option>
-    <option value="NEX">NEOX ($NEX)</option>
-  </select>
-
-  <input id="amount" placeholder="Valor">
-
-  <button class="sidebar-btn" id="sendPayment">Pagar Agora</button>
-
-  <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
-
-  <div id="qrcode"></div>
-  <p id="walletAddress"></p>
-  <p id="status"></p>
-
-  <h3>Extrato</h3>
-  <div id="history"></div>
-</div>
-
-<div id="toast" class="toast"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-<script src="app.js"></script>
-</body>
-</html>
+    <div class="actions">
+      <button class="btn btn-primary">Conectar Wallet</button>
+      <button class="btn btn-secondary">Saiba
   
    
