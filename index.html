@@ -1,51 +1,50 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>NEONEX-PAY</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Ethers.js -->
+  <!-- Ethers v6 -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.umd.min.js"></script>
 
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+  <!-- QR Code -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
 
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
   <div class="container">
     <h1>NEONEX-PAY</h1>
-    <p>Pagamentos P2P Web3 • Você é seu próprio banco</p>
+    <p>Pagamentos Web3 P2P — você é seu próprio banco</p>
 
     <button id="connectBtn">Conectar Carteira</button>
 
     <div id="walletInfo" class="hidden">
+      <div class="infoBox">
+        <p><strong>Endereço:</strong> <span id="address"></span></p>
+        <p><strong>Saldo:</strong> <span id="balance"></span></p>
+        <p><strong>Rede:</strong> <span id="network"></span></p>
+      </div>
 
-  <div id="sendBox" class="hidden">
-    <h3>Enviar Pagamento</h3>
-    <input id="to" placeholder="Endereço destino" />
-    <input id="amount" placeholder="Valor (ETH)" />
-    <button id="sendBtn">Enviar</button>
+      <div id="sendBox">
+        <h3>Enviar ETH</h3>
+        <input id="to" placeholder="Endereço de destino" />
+        <input id="amount" placeholder="Valor em ETH" />
+        <button id="sendBtn">Enviar Pagamento</button>
+      </div>
+
+      <div id="qrBox">
+        <h3>Receber com QR Code</h3>
+        <input id="qrAmount" placeholder="Valor opcional (ETH)" />
+        <button id="qrBtn">Gerar QR Code</button>
+        <div id="qrcode"></div>
+      </div>
+    </div>
   </div>
 
-  <div id="qrBox" class="hidden">
-    <h3>Receber Pagamento</h3>
-    <input id="qrAmount" placeholder="Valor sugerido (ETH)" />
-    <button id="qrBtn">Gerar QR Code</button>
-    <div id="qrcode"></div>
-    <p class="hint">Cliente escaneia e paga direto pela carteira</p>
-  </div>
-
-  <p><strong>Endereço:</strong> <span id="address"></span></p>
-  <p><strong>Saldo:</strong> <span id="balance"></span></p>
-  <p><strong>Rede:</strong> <span id="network"></span></p>
-
-</div>
-
- 
-  </div>
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-  
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
 
