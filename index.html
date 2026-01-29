@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEONEX-PAY</title>
+<title>NEONEX-PAY Checkout</title>
 
 <style>
 body {
@@ -39,6 +39,15 @@ body {
   );
   border-radius: 10px;
   margin: 15px 0 30px;
+}
+
+h2 {
+  margin-bottom: 15px;
+}
+
+.product-name {
+  font-size: 20px;
+  margin: 12px 0;
 }
 
 input {
@@ -138,11 +147,14 @@ button:hover {
   <div class="logo">N</div>
   <div class="snake-bar"></div>
 
+  <h2>Checkout</h2>
+  <div class="product-name" id="productName">Serviço Premium NEONEX</div>
+
   <button id="connectWallet">Conectar MetaMask</button>
 
   <input id="amount" placeholder="Valor em USDT">
 
-  <button id="sendPayment">Pagar em USDT</button>
+  <button id="sendPayment">Pagar Agora</button>
 
   <div class="progress-bar">
     <div id="progressFill" class="progress-fill"></div>
@@ -154,6 +166,7 @@ button:hover {
 
   <h3>Extrato</h3>
   <div id="history"></div>
+
 </div>
 
 <div id="toast" class="toast"></div>
@@ -170,19 +183,18 @@ const toast = document.getElementById("toast");
 const qrBox = document.getElementById("qrcode");
 const walletBox = document.getElementById("walletAddress");
 const historyBox = document.getElementById("history");
+const productNameBox = document.getElementById("productName");
 
 let provider;
 let signer;
 let userAddress = null;
 
-// USDT na Arbitrum
 const USDT_ADDRESS = "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9";
 const USDT_ABI = [
   "function transfer(address to, uint amount) returns (bool)",
   "function decimals() view returns (uint8)"
 ];
 
-// Coloque aqui seu endereço de recebimento
 const RECEIVER = "SEU_ENDERECO_PUBLICO_AQUI";
 
 function showToast(message) {
@@ -227,7 +239,9 @@ connectBtn.onclick = connectWallet;
 function loadAmountFromURL() {
   const params = new URLSearchParams(window.location.search);
   const value = params.get("amount");
+  const product = params.get("product");
   if (value) amountInput.value = value;
+  if (product) productNameBox.innerText = product;
 }
 
 loadAmountFromURL();
@@ -276,6 +290,7 @@ async function sendUSDT() {
 sendBtn.onclick = sendUSDT;
 
 loadHistory();
+generateQR();
 </script>
 
 </body>
