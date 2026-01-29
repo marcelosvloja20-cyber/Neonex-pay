@@ -20,17 +20,14 @@ const USDT_ABI = [
   "function decimals() view returns (uint8)"
 ];
 
-// Recebedor fixo
 const RECEIVER = "SEU_ENDERECO_PUBLICO_AQUI";
 
-// Toast
 function showToast(message) {
   toast.innerText = message;
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
-// Extrato local
 function saveTransaction(data) {
   const history = JSON.parse(localStorage.getItem("neonex_history")) || [];
   history.unshift(data);
@@ -48,7 +45,6 @@ function loadHistory() {
   });
 }
 
-// Conectar MetaMask
 async function connectWallet() {
   if (!window.ethereum) {
     alert("MetaMask não encontrada");
@@ -65,7 +61,6 @@ async function connectWallet() {
 
 connectBtn.onclick = connectWallet;
 
-// Pegar valores da URL
 function loadAmountFromURL() {
   const params = new URLSearchParams(window.location.search);
   const value = params.get("amount");
@@ -76,7 +71,6 @@ function loadAmountFromURL() {
 
 loadAmountFromURL();
 
-// Gerar QR
 function generateQR() {
   if (!userAddress) return;
   qrBox.innerHTML = "";
@@ -87,7 +81,6 @@ function generateQR() {
 
 amountInput.addEventListener("input", generateQR);
 
-// Criar pagamento via API
 async function createPaymentLink(amount, product) {
   try {
     const res = await fetch("/api/create-payment", {
@@ -98,7 +91,7 @@ async function createPaymentLink(amount, product) {
     const data = await res.json();
     if (data.link) {
       showToast("Link de pagamento criado ✅");
-      window.history.replaceState({}, "", data.link); // Atualiza URL
+      window.history.replaceState({}, "", data.link);
     }
   } catch (err) {
     console.error(err);
@@ -106,7 +99,6 @@ async function createPaymentLink(amount, product) {
   }
 }
 
-// Enviar USDT
 async function sendUSDT() {
   if (!signer) {
     showToast("Conecte a carteira");
@@ -152,7 +144,6 @@ async function sendUSDT() {
 
 sendBtn.onclick = sendUSDT;
 
-// Inicializa
 loadHistory();
 generateQR();
 
