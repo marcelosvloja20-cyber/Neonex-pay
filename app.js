@@ -82,7 +82,7 @@ async function sendPayment() {
     const token = TOKENS[tokenKey];
 
     progressFill.style.width = "30%";
-    statusText.innerText = "Criando pagamento...";
+    statusText.innerText = "Iniciando pagamento...";
     showToast("Iniciando pagamento...");
 
     progressFill.style.width = "50%";
