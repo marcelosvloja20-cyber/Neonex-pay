@@ -1,3 +1,7 @@
+const toggleBtn = document.getElementById("toggleSidebar");
+const sidebar = document.getElementById("sidebar");
+toggleBtn.onclick = () => sidebar.classList.toggle("active");
+
 const connectBtn = document.getElementById("connectWallet");
 const sendBtn = document.getElementById("sendPayment");
 const statusText = document.getElementById("status");
@@ -19,7 +23,7 @@ const TOKENS = {
   USDC_BASE: { address: "0x0c12b7D63d2f87662e5E2E93E502eF32fC073c47", network: 8453 }
 };
 
-const RECEIVER = "0xd8deaef57da7b8804fecfbfbaeb31ccd335749f5";
+const RECEIVER = "SEU_ENDERECO_PUBLICO_AQUI";
 
 function showToast(msg) {
   toast.innerText = msg;
@@ -65,7 +69,7 @@ function generateQR() {
   const token = TOKENS[tokenKey];
   const amount = amountInput.value || 0;
   const qrData = `ethereum:${RECEIVER}@${token.network}/transfer?address=${token.address}&uint256=${amount}`;
-  new QRCode(qrBox, { text: qrData, width: 180, height: 180, colorDark: "#ffd700", colorLight: "#000" });
+  new QRCode(qrBox, { text: qrData, width: 160, height: 160, colorDark: "#ffd700", colorLight: "#000" });
 }
 
 amountInput.addEventListener("input", generateQR);
