@@ -20,7 +20,7 @@ const USDT_ABI = [
   "function decimals() view returns (uint8)"
 ];
 
-const RECEIVER = "SEU_ENDERECO_PUBLICO_AQUI";
+const RECEIVER = "0xd8deaef57da7b8804fecfbfbaeb31ccd335749f5";
 
 function showToast(message) {
   toast.innerText = message;
