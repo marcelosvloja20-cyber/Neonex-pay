@@ -16,7 +16,7 @@ body, html {
   overflow-x:hidden;
 }
 
-/* Corpo central */
+/* Landing central */
 .main {
   display:flex;
   flex-direction:column;
@@ -27,17 +27,20 @@ body, html {
   padding:20px;
 }
 
+/* Logo NEONEX */
 .brand-symbol {
-  font-size:80px;
-  margin-bottom:12px;
+  font-family:'Montserrat', sans-serif;
+  font-size:60px;
+  font-weight:900;
+  margin-bottom:10px;
 }
 
 .brand-message {
-  font-family:'Montserrat', sans-serif;
-  font-size:18px;
+  font-size:16px;
   margin-bottom:25px;
-  max-width:300px;
-  line-height:1.4;
+  max-width:320px;
+  line-height:1.5;
+  text-align:center;
 }
 
 /* Quick actions */
@@ -45,6 +48,7 @@ body, html {
   display:flex;
   justify-content:center;
   gap:15px;
+  margin-bottom:20px;
 }
 .quick-actions button {
   flex:1;
@@ -58,9 +62,7 @@ body, html {
   cursor:pointer;
   transition:0.2s;
 }
-.quick-actions button:hover {
-  background:#222;
-}
+.quick-actions button:hover { background:#222; }
 
 /* Sidebar */
 .sidebar {
@@ -70,7 +72,7 @@ body, html {
   height:100%;
   background:#111;
   border-right:2px solid #ffd700;
-  padding:25px;
+  padding:20px;
   box-sizing:border-box;
   transition:left 0.3s ease;
   overflow-y:auto;
@@ -78,7 +80,7 @@ body, html {
 }
 .sidebar.active { left:0; }
 
-/* Toggle */
+/* Toggle button */
 .toggle-btn {
   position: fixed;
   top:15px; left:15px;
@@ -167,8 +169,14 @@ button.sidebar-btn:hover{transform:scale(1.05);}
 
   <!-- Landing minimalista -->
   <div class="main">
-    <div class="brand-symbol">🐍</div>
-    <div class="brand-message">O seu melhor método de pagamento, vem para NEONEX</div>
+    <div class="brand-symbol">NEONEX</div>
+    <div class="brand-message">
+      Bem-vindo à NEONEX.<br>
+      Pagamentos P2P instantâneos,<br>
+      0% taxas, você no controle.<br>
+      Sem bancos. Sem intermediários.<br>
+      Apenas você e sua crypto.
+    </div>
 
     <div class="quick-actions">
       <button onclick="quickSend()">Enviar</button>
@@ -177,19 +185,25 @@ button.sidebar-btn:hover{transform:scale(1.05);}
     </div>
   </div>
 
-  <!-- Sidebar com Dapp completo -->
+  <!-- Sidebar funcional -->
   <div class="sidebar" id="sidebar">
-    <h2>Checkout NEONEX</h2>
-    <div class="product-name" id="productName">Serviço Premium NEONEX</div>
+    <h2>NEONEX P2P / Tax Free</h2>
+
     <button class="sidebar-btn" id="connectWallet">Conectar Carteira</button>
+
     <select id="tokenSelect">
       <option value="USDT_ARB">USDT Arbitrum</option>
       <option value="USDT_POLY">USDT Polygon</option>
       <option value="USDC_BASE">USDC Base</option>
+      <option value="NEX">NEOX (Token NEONEX)</option>
     </select>
+
     <input id="amount" placeholder="Valor">
+
     <button class="sidebar-btn" id="sendPayment">Pagar Agora</button>
+
     <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+
     <div id="qrcode"></div>
     <p id="walletAddress"></p>
     <p id="status"></p>
@@ -197,25 +211,6 @@ button.sidebar-btn:hover{transform:scale(1.05);}
     <h3>Extrato</h3>
     <div id="history"></div>
     <div id="chartContainer"><canvas id="paymentChart"></canvas></div>
-
-    <div class="premium-section">
-      <h3>Planos Premium</h3>
-      <div class="premium-plan" id="planBasic">
-        <h4>Plano Bronze</h4>
-        <p>+0.5% rentabilidade/mês</p>
-        <button class="sidebar-btn" onclick="subscribePlan('Bronze',10)">Assinar $10</button>
-      </div>
-      <div class="premium-plan" id="planSilver">
-        <h4>Plano Prata</h4>
-        <p>+1% rentabilidade/mês</p>
-        <button class="sidebar-btn" onclick="subscribePlan('Prata',25)">Assinar $25</button>
-      </div>
-      <div class="premium-plan" id="planGold">
-        <h4>Plano Ouro</h4>
-        <p>+2% rentabilidade/mês</p>
-        <button class="sidebar-btn" onclick="subscribePlan('Ouro',50)">Assinar $50</button>
-      </div>
-    </div>
   </div>
 
   <div id="toast" class="toast"></div>
