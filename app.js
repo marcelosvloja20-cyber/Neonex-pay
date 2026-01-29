@@ -1,70 +1,85 @@
-let provider;
-let signer;
-let userAddress;
+let provider = null;
+let signer = null;
 
 const connectBtn = document.getElementById("connectWallet");
 const sendBtn = document.getElementById("sendPayment");
 const amountInput = document.getElementById("amount");
 const statusBox = document.getElementById("status");
-const progressBar = document.getElementById("progressFill");
+const progressFill = document.getElementById("progressFill");
 
-connectBtn.onclick = connectWallet;
-sendBtn.onclick = sendPayment;
+connectBtn.addEventListener("click", connectWallet);
+sendBtn.addEventListener("click", sendPayment);
 
 async function connectWallet() {
-  if (!window.ethereum) {
-    alert("MetaMask não encontrada");
-    return;
+  try {
+    if (!window.ethereum) {
+      alert("Instale a MetaMask para continuar");
+      return;
+    }
+
+    provider = new ethers.BrowserProvider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    signer = await provider.getSigner();
+
+    statusBox.innerText = "Carteira conectada com sucesso ✅";
+  } catch (error) {
+    console.error(error);
+    statusBox.innerText = "Erro ao conectar carteira ❌";
   }
-
-  provider = new ethers.BrowserProvider(window.ethereum);
-  await provider.send("eth_requestAccounts", []);
-  signer = await provider.getSigner();
-  userAddress = await signer.getAddress();
-
-  statusBox.innerText = "Carteira conectada com sucesso ✅";
 }
 
 async function sendPayment() {
-  if (!signer) {
-    alert("Conecte a carteira primeiro");
-    return;
-  }
+  try {
+    if (!signer) {
+      alert("Conecte a carteira primeiro");
+      return;
+    }
 
-  const amount = amountInput.value;
-  startProgress("Enviando transação...");
+    const amount = amountInput.value.trim();
 
-  const tx = await signer.sendTransaction({
-    to: userAddress, // depois troque pelo recebedor real
-    value: ethers.parseEther(amount)
-  });
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
+      alert("Digite um valor válido");
+      return;
+    }
 
-  startProgress("Aguardando confirmação na blockchain...");
+    startProgress("Enviando transação...");
 
-  const receipt = await provider.waitForTransaction(tx.hash);
+    const tx = await signer.sendTransaction({
+      to: await signer.getAddress(), // depois você troca pelo endereço de recebimento real
+      value: ethers.parseEther(amount)
+    });
 
-  if (receipt.status === 1) {
-    finishProgress("Pagamento confirmado com sucesso 🎉");
-  } else {
-    finishProgress("Transação falhou ❌");
+    startProgress("Confirmando na blockchain...");
+
+    const receipt = await provider.waitForTransaction(tx.hash);
+
+    if (receipt.status === 1) {
+      finishProgress("Pagamento confirmado com sucesso 🎉");
+    } else {
+      finishProgress("Transação falhou ❌");
+    }
+
+  } catch (error) {
+    console.error(error);
+    finishProgress("Erro na transação ❌");
   }
 }
 
-function startProgress(message) {
-  statusBox.innerText = message;
-  progressBar.style.width = "30%";
+function startProgress(text) {
+  statusBox.innerText = text;
+  progressFill.style.width = "25%";
 
   setTimeout(() => {
-    progressBar.style.width = "65%";
-  }, 1200);
+    progressFill.style.width = "65%";
+  }, 900);
 }
 
-function finishProgress(message) {
-  progressBar.style.width = "100%";
-  statusBox.innerText = message;
+function finishProgress(text) {
+  progressFill.style.width = "100%";
+  statusBox.innerText = text;
 
   setTimeout(() => {
-    progressBar.style.width = "0%";
+    progressFill.style.width = "0%";
   }, 2000);
 }
 
