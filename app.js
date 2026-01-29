@@ -1,12 +1,25 @@
 let provider = null;
 let signer = null;
 
-const USDT_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+// USDT na Polygon
+const USDT_ADDRESS = "0x3813e82e6f7098b9583FC0F33a962D02018B6803";
 
 const USDT_ABI = [
   "function transfer(address to, uint256 value) returns (bool)",
   "function decimals() view returns (uint8)"
 ];
+
+const POLYGON_PARAMS = {
+  chainId: "0x89",
+  chainName: "Polygon Mainnet",
+  rpcUrls: ["https://polygon-rpc.com"],
+  nativeCurrency: {
+    name: "MATIC",
+    symbol: "MATIC",
+    decimals: 18
+  },
+  blockExplorerUrls: ["https://polygonscan.com"]
+};
 
 const connectBtn = document.getElementById("connectWallet");
 const sendBtn = document.getElementById("sendPayment");
@@ -14,8 +27,8 @@ const amountInput = document.getElementById("amount");
 const statusBox = document.getElementById("status");
 const progressFill = document.getElementById("progressFill");
 
-connectBtn.addEventListener("click", connectWallet);
-sendBtn.addEventListener("click", sendPayment);
+connectBtn.onclick = connectWallet;
+sendBtn.onclick = sendPayment;
 
 async function connectWallet() {
   try {
@@ -24,14 +37,32 @@ async function connectWallet() {
       return;
     }
 
+    await switchToPolygon();
+
     provider = new ethers.BrowserProvider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     signer = await provider.getSigner();
 
-    statusBox.innerText = "Carteira conectada com sucesso ✅";
+    statusBox.innerText = "Carteira conectada na Polygon ✅";
   } catch (e) {
     console.error(e);
-    statusBox.innerText = "Erro ao conectar carteira ❌";
+    statusBox.innerText = "Erro ao conectar ❌";
+  }
+}
+
+async function switchToPolygon() {
+  try {
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: POLYGON_PARAMS.chainId }]
+    });
+  } catch (switchError) {
+    if (switchError.code === 4902) {
+      await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [POLYGON_PARAMS]
+      });
+    }
   }
 }
 
@@ -48,31 +79,30 @@ async function sendPayment() {
       return;
     }
 
-    startProgress("Enviando USDT...");
+    startProgress("Enviando USDT na Polygon...");
 
     const usdt = new ethers.Contract(USDT_ADDRESS, USDT_ABI, signer);
     const decimals = await usdt.decimals();
-
     const value = ethers.parseUnits(amount, decimals);
 
     const tx = await usdt.transfer(
-      await signer.getAddress(), // depois troca pelo endereço de recebimento real
+      await signer.getAddress(), // depois troque pelo endereço real de recebimento
       value
     );
 
-    startProgress("Confirmando na blockchain...");
+    startProgress("Confirmando pagamento...");
 
     const receipt = await provider.waitForTransaction(tx.hash);
 
     if (receipt.status === 1) {
-      finishProgress("Pagamento USDT confirmado 🎉");
+      finishProgress("USDT confirmado com sucesso 🎉");
     } else {
-      finishProgress("Falha na transação ❌");
+      finishProgress("Falha no pagamento ❌");
     }
 
   } catch (e) {
     console.error(e);
-    finishProgress("Erro no pagamento ❌");
+    finishProgress("Erro na transação ❌");
   }
 }
 
