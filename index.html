@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEONEX-PAY Checkout</title>
+<title>NEONEX-PAY Multi-Chain</title>
 
 <style>
 body {
@@ -50,7 +50,7 @@ h2 {
   margin: 12px 0;
 }
 
-input {
+input, select {
   width: 100%;
   padding: 14px;
   background: #111;
@@ -146,12 +146,18 @@ button:hover {
   <div class="logo">N</div>
   <div class="snake-bar"></div>
 
-  <h2>Checkout</h2>
+  <h2>Checkout Multi-Chain</h2>
   <div class="product-name" id="productName">Serviço Premium NEONEX</div>
 
   <button id="connectWallet">Conectar MetaMask</button>
 
-  <input id="amount" placeholder="Valor em USDT">
+  <select id="tokenSelect">
+    <option value="USDT_ARB">USDT Arbitrum</option>
+    <option value="USDT_POLY">USDT Polygon</option>
+    <option value="USDC_BASE">USDC Base</option>
+  </select>
+
+  <input id="amount" placeholder="Valor">
 
   <button id="sendPayment">Pagar Agora</button>
 
