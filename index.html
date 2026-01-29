@@ -22,29 +22,39 @@ body{
   padding:20px;
 }
 
+/* ===== HEADER FINTECH ===== */
+
 .header{
   text-align:center;
   margin-bottom:20px;
 }
 
-.logo{
-  font-size:48px;
+.logoN{
+  font-size:64px;
   font-weight:900;
-  letter-spacing:4px;
+  letter-spacing:6px;
 }
 
 .snake{
-  height:10px;
+  margin:14px 0;
+  height:12px;
+  border-radius:20px;
   background:repeating-linear-gradient(
     45deg,
     #ffd700,
-    #ffd700 10px,
-    #000 10px,
-    #000 20px
+    #ffd700 12px,
+    #000 12px,
+    #000 24px
   );
-  border-radius:20px;
-  margin:12px 0;
+  animation: move 3s linear infinite;
 }
+
+@keyframes move{
+  from{background-position:0 0;}
+  to{background-position:200px 0;}
+}
+
+/* ===== UI ===== */
 
 button{
   width:100%;
@@ -53,23 +63,24 @@ button{
   background:#ffd700;
   color:#000;
   border:none;
-  border-radius:10px;
+  border-radius:12px;
   font-weight:bold;
+  cursor:pointer;
 }
 
 input{
   width:100%;
   padding:10px;
   margin-top:8px;
-  border-radius:8px;
+  border-radius:10px;
   border:none;
 }
 
 .box{
   margin-top:16px;
-  background:#0d0d0d;
+  background:#0c0c0c;
   padding:14px;
-  border-radius:14px;
+  border-radius:16px;
   border:1px solid #ffd70055;
 }
 
@@ -84,12 +95,14 @@ input{
 <body>
 <div class="app">
 
+<!-- ===== TOPO FINTECH ===== -->
 <div class="header">
-  <div class="logo">N</div>
+  <div class="logoN">N</div>
   <div class="snake"></div>
   <h2>NEONEX-PAY</h2>
 </div>
 
+<!-- ===== CONEXÃO ===== -->
 <button id="connectBtn">Conectar Carteira</button>
 
 <div id="walletBox" class="box" style="display:none">
@@ -98,6 +111,7 @@ input{
 <p>Rede: <span id="network"></span></p>
 </div>
 
+<!-- ===== PAGAMENTO ===== -->
 <div class="box">
 <h3>Enviar pagamento</h3>
 <input id="to" placeholder="Carteira destino">
@@ -107,6 +121,7 @@ input{
 <button id="sendUSDT">Enviar USDT (Polygon)</button>
 </div>
 
+<!-- ===== QR ===== -->
 <div class="box">
 <h3>Receber com QR</h3>
 <input id="qrAmount" placeholder="Valor opcional">
@@ -116,6 +131,9 @@ input{
 
 </div>
 
+<!-- SEMPRE NO FINAL -->
 <script src="app.js"></script>
 </body>
 </html>
+
+
