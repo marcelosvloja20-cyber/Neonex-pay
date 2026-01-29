@@ -1,198 +1,204 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NEONEX PAY — P2P Zero Taxas</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEONEX — P2P Zero Taxas</title>
 
-  <style>
-    :root {
-      --bg-dark: #0b0b0f;
-      --neon-blue: #00e5ff;
-      --neon-purple: #7b61ff;
-      --text-main: #ffffff;
-      --text-muted: #a0a0b5;
-    }
+<style>
+:root {
+  --bg-dark:#0b0b0f;
+  --neon-blue:#00e5ff;
+  --neon-purple:#7b61ff;
+  --text-main:#ffffff;
+  --text-muted:#a0a0b5;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Inter,system-ui,sans-serif;
+}
 
-    body {
-      background: radial-gradient(circle at top, #141420, var(--bg-dark));
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 24px;
-    }
+body{
+background:radial-gradient(circle at top,#141420,var(--bg-dark));
+color:var(--text-main);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:24px;
+}
 
-    .container {
-      max-width: 420px;
-      width: 100%;
-      background: linear-gradient(180deg, #111120, #0b0b0f);
-      border-radius: 24px;
-      padding: 32px 24px;
-      box-shadow: 0 0 40px rgba(0,229,255,0.15);
-      border: 1px solid rgba(123,97,255,0.2);
-    }
+.container{
+max-width:420px;
+width:100%;
+background:linear-gradient(180deg,#111120,#0b0b0f);
+border-radius:24px;
+padding:32px 24px;
+box-shadow:0 0 40px rgba(0,229,255,.15);
+border:1px solid rgba(123,97,255,.2);
+}
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:24px;
+}
 
-    .logo-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 20px;
-      color: #000;
-    }
+.logo-icon{
+width:44px;
+height:44px;
+border-radius:12px;
+background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:900;
+font-size:20px;
+color:#000;
+}
 
-    .logo-text {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
+.logo-text{
+font-size:22px;
+font-weight:800;
+}
 
-    .logo-text span {
-      color: var(--neon-blue);
-    }
+.logo-text span{
+color:var(--neon-blue);
+}
 
-    h1 {
-      font-size: 26px;
-      line-height: 1.2;
-      margin-bottom: 16px;
-    }
+h1{
+font-size:26px;
+margin-bottom:16px;
+}
 
-    h1 span {
-      color: var(--neon-blue);
-    }
+h1 span{
+color:var(--neon-blue);
+}
 
-    p {
-      font-size: 15px;
-      color: var(--text-muted);
-      margin-bottom: 24px;
-      line-height: 1.6;
-    }
+p{
+font-size:15px;
+color:var(--text-muted);
+margin-bottom:24px;
+line-height:1.6;
+}
 
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 28px;
-    }
+.features{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-bottom:28px;
+}
 
-    .feature {
-      background: rgba(255,255,255,0.03);
-      border-radius: 16px;
-      padding: 14px 8px;
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.05);
-    }
+.feature{
+background:rgba(255,255,255,.03);
+border-radius:16px;
+padding:14px 8px;
+text-align:center;
+border:1px solid rgba(255,255,255,.05);
+}
 
-    .feature strong {
-      display: block;
-      font-size: 18px;
-      color: var(--neon-blue);
-      margin-bottom: 4px;
-    }
+.feature strong{
+display:block;
+font-size:18px;
+color:var(--neon-blue);
+}
 
-    .feature span {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+.feature span{
+font-size:12px;
+color:var(--text-muted);
+}
 
-    .actions {
-      display: flex;
-      gap: 12px;
-    }
+.actions{
+display:flex;
+gap:12px;
+}
 
-    .btn {
-      flex: 1;
-      padding: 14px;
-      border-radius: 16px;
-      border: none;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
+.btn{
+flex:1;
+padding:14px;
+border-radius:16px;
+border:none;
+font-weight:700;
+cursor:pointer;
+transition:.2s;
+}
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
-      color: #000;
-    }
+.btn-primary{
+background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
+color:#000;
+}
 
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid rgba(0,229,255,0.4);
-      color: var(--neon-blue);
-    }
+.btn-secondary{
+background:transparent;
+border:1px solid rgba(0,229,255,.4);
+color:var(--neon-blue);
+}
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 20px rgba(0,229,255,0.3);
-    }
+.btn:hover{
+transform:translateY(-2px);
+box-shadow:0 0 20px rgba(0,229,255,.3);
+}
 
-    footer {
-      margin-top: 24px;
-      text-align: center;
-      font-size: 11px;
-      color: #666;
-    }
-  </style>
+footer{
+margin-top:24px;
+text-align:center;
+font-size:11px;
+color:#666;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="logo">
-      <div class="logo-icon">N</div>
-      <div class="logo-text">NEONEX <span>PAY</span></div>
-    </div>
+<div class="logo">
+  <div class="logo-icon">N</div>
+  <div class="logo-text">NEONEX</div>
+</div>
 
-    <h1>
-      Pagamentos P2P <span>instantâneos</span><br/>
-      com <span>0% taxas</span>
-    </h1>
+<h1>
+Bem-vindo à <span>NEONEX</span><br>
+Pagamentos P2P <span>instantâneos</span>
+</h1>
 
-    <p>
-      Você no controle total da sua crypto.<br/>
-      Sem bancos. Sem intermediários.<br/>
-      Cold wallet por design.
-    </p>
+<p>
+0% taxas, você no controle.<br>
+Sem bancos. Sem intermediários.<br>
+Apenas você e sua crypto.
+</p>
 
-    <div class="features">
-      <div class="feature">
-        <strong>⚡</strong>
-        <span>P2P Rápido</span>
-      </div>
-      <div class="feature">
-        <strong>0%</strong>
-        <span>Zero Taxas</span>
-      </div>
-      <div class="feature">
-        <strong>🔒</strong>
-        <span>Cold Wallet</span>
-      </div>
-    </div>
+<div class="features">
+  <div class="feature">
+    <strong>⚡</strong>
+    <span>P2P rápido</span>
+  </div>
+  <div class="feature">
+    <strong>0%</strong>
+    <span>Zero taxas</span>
+  </div>
+  <div class="feature">
+    <strong>🔐</strong>
+    <span>Self custody</span>
+  </div>
+</div>
 
-    <div class="actions">
-      <button class="btn btn-primary">Conectar Wallet</button>
-      <button class="btn btn-secondary">Saiba
+<div class="actions">
+  <button class="btn btn-primary">Conectar Wallet</button>
+  <button class="btn btn-secondary">Como funciona</button>
+</div>
+
+<footer>
+NEONEX © Infraestrutura P2P
+</footer>
+
+</div>
+
+</body>
+</html>
   
    
