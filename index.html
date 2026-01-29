@@ -53,11 +53,6 @@ input {
   margin-top: 12px;
 }
 
-input:focus {
-  outline: none;
-  box-shadow: 0 0 8px #ffd700;
-}
-
 button {
   width: 100%;
   padding: 14px;
@@ -69,11 +64,6 @@ button {
   cursor: pointer;
   background: linear-gradient(135deg, #ffd700, #ffb700);
   color: #000;
-  transition: transform 0.2s ease;
-}
-
-button:hover {
-  transform: scale(1.03);
 }
 
 .progress-bar {
@@ -92,9 +82,19 @@ button:hover {
   transition: width 0.8s ease;
 }
 
+#qrcode {
+  margin-top: 25px;
+}
+
+#walletAddress {
+  font-size: 12px;
+  margin-top: 10px;
+  word-break: break-all;
+  color: #aaa;
+}
+
 #status {
   margin-top: 12px;
-  font-size: 14px;
   color: #fff;
 }
 </style>
@@ -105,27 +105,29 @@ button:hover {
 <div class="container">
 
   <div class="logo">N</div>
-
   <div class="snake-bar"></div>
 
   <button id="connectWallet">Conectar MetaMask</button>
 
-  <input id="amount" placeholder="Valor em ETH">
+  <input id="amount" placeholder="Valor em USDT">
 
-  <button id="sendPayment">Enviar Pagamento</button>
+  <button id="sendPayment">Pagar em USDT</button>
 
   <div class="progress-bar">
     <div id="progressFill" class="progress-fill"></div>
   </div>
 
+  <div id="qrcode"></div>
+
+  <p id="walletAddress"></p>
   <p id="status"></p>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
 <script src="app.js"></script>
 
 </body>
 </html>
-
 
