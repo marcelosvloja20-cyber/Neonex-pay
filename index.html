@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>NEONEX PAY — P2P Zero Taxas</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEONEX PAY — Link de Pagamento</title>
 
 <style>
 :root{
@@ -46,7 +46,6 @@ button,input,select{
 .primary{
   background:linear-gradient(135deg,var(--blue),var(--purple));
   color:#000;
-  cursor:pointer;
 }
 input,select{
   background:#0e0e1a;
@@ -56,16 +55,24 @@ input,select{
 .hidden{display:none}
 .status{font-size:12px;color:var(--muted);margin-top:8px}
 .badge{font-size:11px;color:var(--blue);margin-bottom:8px}
+.link-box{
+  font-size:12px;
+  word-break:break-all;
+  background:#0e0e1a;
+  padding:10px;
+  border-radius:12px;
+  margin-top:10px;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-  <div class="badge">REDE: Polygon</div>
+  <div class="badge">LINK DE PAGAMENTO</div>
 
   <h1>NEONEX <span>PAY</span></h1>
-  <p>P2P • Zero taxas • Stablecoins</p>
+  <p>P2P • Zero taxas • Compartilhável</p>
 
   <button id="connectBtn" class="primary">Conectar Wallet</button>
 
@@ -75,9 +82,13 @@ input,select{
       <option value="USDC">USDC</option>
     </select>
 
-    <input id="to" placeholder="Endereço de destino" />
-    <input id="amount" placeholder="Valor" />
-    <button id="sendBtn" class="primary">Enviar Pagamento</button>
+    <input id="to" placeholder="Endereço de destino">
+    <input id="amount" placeholder="Valor">
+
+    <button id="sendBtn" class="primary">Pagar Agora</button>
+    <button id="linkBtn" class="primary">Gerar Link</button>
+
+    <div id="linkBox" class="link-box hidden"></div>
   </div>
 
   <div class="status" id="status"></div>
@@ -88,94 +99,95 @@ input,select{
 <script>
 let provider, signer;
 
-const TOKENS = {
-  USDT: {
-    address: "0xc2132D05D31c914a87C6611C10748AaCbA99DFeD",
-    decimals: 6
-  },
-  USDC: {
-    address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
-    decimals: 6
-  }
+const TOKENS={
+  USDT:{address:"0xc2132D05D31c914a87C6611C10748AaCbA99DFeD",decimals:6},
+  USDC:{address:"0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",decimals:6}
 };
 
-const ABI = [
-  "function transfer(address to, uint amount) returns (bool)"
-];
+const ABI=["function transfer(address to,uint amount) returns (bool)"];
 
-const POLYGON = {
-  chainId: "0x89",
-  chainName: "Polygon Mainnet",
-  nativeCurrency: { name: "MATIC", symbol: "MATIC", decimals: 18 },
-  rpcUrls: ["https://polygon-rpc.com"],
-  blockExplorerUrls: ["https://polygonscan.com"]
+const POLYGON={
+  chainId:"0x89",
+  chainName:"Polygon Mainnet",
+  nativeCurrency:{name:"MATIC",symbol:"MATIC",decimals:18},
+  rpcUrls:["https://polygon-rpc.com"],
+  blockExplorerUrls:["https://polygonscan.com"]
 };
 
-async function switchPolygon() {
-  try {
+async function switchPolygon(){
+  try{
     await ethereum.request({
-      method: "wallet_switchEthereumChain",
-      params: [{ chainId: POLYGON.chainId }]
+      method:"wallet_switchEthereumChain",
+      params:[{chainId:POLYGON.chainId}]
     });
-  } catch (e) {
-    if (e.code === 4902) {
+  }catch(e){
+    if(e.code===4902){
       await ethereum.request({
-        method: "wallet_addEthereumChain",
-        params: [POLYGON]
+        method:"wallet_addEthereumChain",
+        params:[POLYGON]
       });
-    } else throw e;
+    }else throw e;
   }
 }
 
-const connectBtn = document.getElementById("connectBtn");
-const sendBox = document.getElementById("sendBox");
-const sendBtn = document.getElementById("sendBtn");
-const statusText = document.getElementById("status");
+const qs=new URLSearchParams(window.location.search);
+if(qs.get("to"))document.getElementById("to").value=qs.get("to");
+if(qs.get("amount"))document.getElementById("amount").value=qs.get("amount");
+if(qs.get("token"))document.getElementById("token").value=qs.get("token");
 
-connectBtn.onclick = async () => {
-  if (!window.ethereum) return alert("Instale MetaMask");
+const connectBtn=document.getElementById("connectBtn");
+const sendBox=document.getElementById("sendBox");
+const sendBtn=document.getElementById("sendBtn");
+const linkBtn=document.getElementById("linkBtn");
+const statusText=document.getElementById("status");
+const linkBox=document.getElementById("linkBox");
 
+connectBtn.onclick=async()=>{
+  if(!window.ethereum)return alert("Instale MetaMask");
   await switchPolygon();
-  provider = new ethers.BrowserProvider(window.ethereum);
-  await provider.send("eth_requestAccounts", []);
-  signer = await provider.getSigner();
-
-  const addr = await signer.getAddress();
-  connectBtn.innerText = addr.slice(0,6)+"..."+addr.slice(-4);
+  provider=new ethers.BrowserProvider(window.ethereum);
+  await provider.send("eth_requestAccounts",[]);
+  signer=await provider.getSigner();
+  const addr=await signer.getAddress();
+  connectBtn.innerText=addr.slice(0,6)+"..."+addr.slice(-4);
   sendBox.classList.remove("hidden");
-  statusText.innerText = "Wallet conectada na Polygon ✅";
 };
 
-sendBtn.onclick = async () => {
-  const tokenKey = document.getElementById("token").value;
-  const to = document.getElementById("to").value;
-  const amount = document.getElementById("amount").value;
-
-  if (!to || !amount) return alert("Preencha tudo");
-
-  try {
-    statusText.innerText = "Enviando "+tokenKey+"...";
-    const token = TOKENS[tokenKey];
-    const contract = new ethers.Contract(
-      token.address,
-      ABI,
-      signer
-    );
-
-    const value = ethers.parseUnits(amount, token.decimals);
-    const tx = await contract.transfer(to, value);
+sendBtn.onclick=async()=>{
+  const t=document.getElementById("token").value;
+  const to=document.getElementById("to").value;
+  const amount=document.getElementById("amount").value;
+  if(!to||!amount)return alert("Preencha tudo");
+  try{
+    statusText.innerText="Enviando pagamento...";
+    const c=new ethers.Contract(TOKENS[t].address,ABI,signer);
+    const v=ethers.parseUnits(amount,TOKENS[t].decimals);
+    const tx=await c.transfer(to,v);
     await tx.wait();
-
-    statusText.innerText = tokenKey+" enviado com sucesso ✅";
-  } catch (e) {
+    statusText.innerText="Pagamento concluído ✅";
+  }catch(e){
     console.error(e);
-    statusText.innerText = "Erro ao enviar ❌";
+    statusText.innerText="Erro no pagamento ❌";
   }
+};
+
+linkBtn.onclick=()=>{
+  const t=document.getElementById("token").value;
+  const to=document.getElementById("to").value;
+  const amount=document.getElementById("amount").value;
+  if(!to||!amount)return alert("Preencha tudo");
+  const url=
+    window.location.origin+
+    window.location.pathname+
+    `?to=${to}&amount=${amount}&token=${t}`;
+  linkBox.innerText=url;
+  linkBox.classList.remove("hidden");
 };
 </script>
 
 </body>
 </html>
+
 
 
 
