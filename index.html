@@ -35,7 +35,7 @@ body{
 h1{font-size:24px;margin-bottom:6px}
 h1 span{color:var(--blue)}
 p{font-size:14px;color:var(--muted);margin-bottom:16px}
-button,input{
+button,input,select{
   width:100%;
   padding:14px;
   border-radius:16px;
@@ -48,23 +48,14 @@ button,input{
   color:#000;
   cursor:pointer;
 }
-.secondary{
-  background:transparent;
-  border:1px solid var(--blue);
-  color:var(--blue);
-}
-input{
+input,select{
   background:#0e0e1a;
   color:#fff;
   border:1px solid rgba(255,255,255,.1);
 }
 .hidden{display:none}
 .status{font-size:12px;color:var(--muted);margin-top:8px}
-.badge{
-  font-size:11px;
-  color:var(--blue);
-  margin-bottom:8px;
-}
+.badge{font-size:11px;color:var(--blue);margin-bottom:8px}
 </style>
 </head>
 
@@ -74,13 +65,18 @@ input{
   <div class="badge">REDE: Polygon</div>
 
   <h1>NEONEX <span>PAY</span></h1>
-  <p>P2P • Zero taxas • Rápido e barato</p>
+  <p>P2P • Zero taxas • Stablecoins</p>
 
   <button id="connectBtn" class="primary">Conectar Wallet</button>
 
   <div id="sendBox" class="hidden">
+    <select id="token">
+      <option value="USDT">USDT</option>
+      <option value="USDC">USDC</option>
+    </select>
+
     <input id="to" placeholder="Endereço de destino" />
-    <input id="amount" placeholder="Valor (MATIC)" />
+    <input id="amount" placeholder="Valor" />
     <button id="sendBtn" class="primary">Enviar Pagamento</button>
   </div>
 
@@ -92,92 +88,95 @@ input{
 <script>
 let provider, signer;
 
+const TOKENS = {
+  USDT: {
+    address: "0xc2132D05D31c914a87C6611C10748AaCbA99DFeD",
+    decimals: 6
+  },
+  USDC: {
+    address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+    decimals: 6
+  }
+};
+
+const ABI = [
+  "function transfer(address to, uint amount) returns (bool)"
+];
+
 const POLYGON = {
   chainId: "0x89",
   chainName: "Polygon Mainnet",
-  nativeCurrency: {
-    name: "MATIC",
-    symbol: "MATIC",
-    decimals: 18
-  },
+  nativeCurrency: { name: "MATIC", symbol: "MATIC", decimals: 18 },
   rpcUrls: ["https://polygon-rpc.com"],
   blockExplorerUrls: ["https://polygonscan.com"]
 };
+
+async function switchPolygon() {
+  try {
+    await ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: POLYGON.chainId }]
+    });
+  } catch (e) {
+    if (e.code === 4902) {
+      await ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [POLYGON]
+      });
+    } else throw e;
+  }
+}
 
 const connectBtn = document.getElementById("connectBtn");
 const sendBox = document.getElementById("sendBox");
 const sendBtn = document.getElementById("sendBtn");
 const statusText = document.getElementById("status");
 
-async function switchToPolygon() {
-  try {
-    await window.ethereum.request({
-      method: "wallet_switchEthereumChain",
-      params: [{ chainId: POLYGON.chainId }]
-    });
-  } catch (err) {
-    if (err.code === 4902) {
-      await window.ethereum.request({
-        method: "wallet_addEthereumChain",
-        params: [POLYGON]
-      });
-    } else {
-      throw err;
-    }
-  }
-}
-
 connectBtn.onclick = async () => {
-  if (!window.ethereum) {
-    alert("Instale MetaMask");
-    return;
-  }
+  if (!window.ethereum) return alert("Instale MetaMask");
 
-  try {
-    await switchToPolygon();
+  await switchPolygon();
+  provider = new ethers.BrowserProvider(window.ethereum);
+  await provider.send("eth_requestAccounts", []);
+  signer = await provider.getSigner();
 
-    provider = new ethers.BrowserProvider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    signer = await provider.getSigner();
-
-    const address = await signer.getAddress();
-    connectBtn.innerText =
-      address.slice(0,6)+"..."+address.slice(-4);
-
-    sendBox.classList.remove("hidden");
-    statusText.innerText = "Conectado à Polygon ✅";
-  } catch (err) {
-    console.error(err);
-    statusText.innerText = "Erro ao conectar à rede ❌";
-  }
+  const addr = await signer.getAddress();
+  connectBtn.innerText = addr.slice(0,6)+"..."+addr.slice(-4);
+  sendBox.classList.remove("hidden");
+  statusText.innerText = "Wallet conectada na Polygon ✅";
 };
 
 sendBtn.onclick = async () => {
+  const tokenKey = document.getElementById("token").value;
   const to = document.getElementById("to").value;
   const amount = document.getElementById("amount").value;
 
-  if (!to || !amount) {
-    alert("Preencha todos os campos");
-    return;
-  }
+  if (!to || !amount) return alert("Preencha tudo");
 
   try {
-    statusText.innerText = "Enviando pagamento...";
-    const tx = await signer.sendTransaction({
-      to,
-      value: ethers.parseEther(amount)
-    });
+    statusText.innerText = "Enviando "+tokenKey+"...";
+    const token = TOKENS[tokenKey];
+    const contract = new ethers.Contract(
+      token.address,
+      ABI,
+      signer
+    );
+
+    const value = ethers.parseUnits(amount, token.decimals);
+    const tx = await contract.transfer(to, value);
     await tx.wait();
-    statusText.innerText = "Pagamento enviado com sucesso ✅";
-  } catch (err) {
-    console.error(err);
-    statusText.innerText = "Falha no envio ❌";
+
+    statusText.innerText = tokenKey+" enviado com sucesso ✅";
+  } catch (e) {
+    console.error(e);
+    statusText.innerText = "Erro ao enviar ❌";
   }
 };
 </script>
 
 </body>
 </html>
+
 
 
   
