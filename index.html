@@ -1,152 +1,152 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NEONEX PAY — P2P Zero Taxas</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NEONEX PAY — P2P Zero Taxas</title>
 
-  <style>
-    :root {
-      --bg-dark: #0b0b0f;
-      --neon-blue: #00e5ff;
-      --neon-purple: #7b61ff;
-      --text-main: #ffffff;
-      --text-muted: #a0a0b5;
-    }
+<style>
+:root {
+  --bg-dark:#0b0b0f;
+  --neon-blue:#00e5ff;
+  --neon-purple:#7b61ff;
+  --text:#fff;
+  --muted:#a0a0b5;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Inter, system-ui, sans-serif;
-    }
+*{box-sizing:border-box;font-family:Inter,system-ui,sans-serif}
 
-    body {
-      background: radial-gradient(circle at top, #141420, var(--bg-dark));
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 24px;
-    }
+body{
+  background:radial-gradient(circle at top,#141420,var(--bg-dark));
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  color:var(--text);
+}
 
-    .container {
-      max-width: 420px;
-      width: 100%;
-      background: linear-gradient(180deg, #111120, #0b0b0f);
-      border-radius: 24px;
-      padding: 32px 24px;
-      border: 1px solid rgba(123,97,255,0.25);
-      box-shadow: 0 0 40px rgba(0,229,255,0.18);
-    }
+.container{
+  width:100%;
+  max-width:420px;
+  background:linear-gradient(180deg,#111120,#0b0b0f);
+  border-radius:24px;
+  padding:28px;
+  border:1px solid rgba(123,97,255,.25);
+  box-shadow:0 0 40px rgba(0,229,255,.18);
+}
 
-    h1 {
-      font-size: 26px;
-      margin-bottom: 12px;
-    }
+h1{font-size:24px;margin-bottom:6px}
+h1 span{color:var(--neon-blue)}
+p{font-size:14px;color:var(--muted);margin-bottom:16px}
 
-    h1 span {
-      color: var(--neon-blue);
-    }
+button{
+  width:100%;
+  padding:14px;
+  border-radius:16px;
+  border:none;
+  font-weight:700;
+  margin-top:10px;
+  cursor:pointer;
+}
 
-    p {
-      font-size: 14px;
-      color: var(--text-muted);
-      margin-bottom: 20px;
-    }
+.primary{
+  background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
+  color:#000;
+}
 
-    .btn {
-      width: 100%;
-      padding: 14px;
-      border-radius: 16px;
-      border: none;
-      font-weight: 700;
-      margin-bottom: 12px;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
-      color: #000;
-    }
+.secondary{
+  background:transparent;
+  border:1px solid var(--neon-blue);
+  color:var(--neon-blue);
+}
 
-    .secondary {
-      background: transparent;
-      border: 1px solid var(--neon-blue);
-      color: var(--neon-blue);
-    }
+input{
+  width:100%;
+  padding:12px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:#0e0e1a;
+  color:#fff;
+  margin-bottom:10px;
+}
 
-    .hidden {
-      display: none;
-    }
-
-    .qr-box {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .address {
-      word-break: break-all;
-      font-size: 12px;
-      margin-top: 12px;
-      color: var(--text-muted);
-    }
-  </style>
+.hidden{display:none}
+.status{font-size:12px;color:var(--muted);margin-top:8px}
+</style>
 </head>
 
 <body>
 
 <div class="container">
   <h1>NEONEX <span>PAY</span></h1>
-  <p>Receba pagamentos P2P com 0% taxas</p>
+  <p>P2P • Zero taxas • Você no controle</p>
 
-  <button class="btn" id="connectBtn">Conectar Wallet</button>
-  <button class="btn secondary hidden" id="receiveBtn">Receber Pagamento</button>
+  <button id="connectBtn" class="primary">Conectar Wallet</button>
 
-  <div class="qr-box hidden" id="qrBox">
-    <canvas id="qr"></canvas>
-    <div class="address" id="walletAddress"></div>
+  <div id="sendBox" class="hidden">
+    <input id="to" placeholder="Endereço de destino" />
+    <input id="amount" placeholder="Valor (ETH)" />
+    <button id="sendBtn" class="primary">Enviar Pagamento</button>
   </div>
+
+  <div class="status" id="status"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
 <script>
-  let userAddress = "";
+let provider, signer;
 
-  const connectBtn = document.getElementById("connectBtn");
-  const receiveBtn = document.getElementById("receiveBtn");
-  const qrBox = document.getElementById("qrBox");
-  const walletText = document.getElementById("walletAddress");
+const connectBtn = document.getElementById("connectBtn");
+const sendBox = document.getElementById("sendBox");
+const sendBtn = document.getElementById("sendBtn");
+const statusText = document.getElementById("status");
 
-  connectBtn.onclick = async () => {
-    if (!window.ethereum) {
-      alert("Instale MetaMask");
-      return;
-    }
+connectBtn.onclick = async () => {
+  if (!window.ethereum) {
+    alert("Instale MetaMask");
+    return;
+  }
 
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const accounts = await provider.send("eth_requestAccounts", []);
-    userAddress = accounts[0];
+  provider = new ethers.BrowserProvider(window.ethereum);
+  await provider.send("eth_requestAccounts", []);
+  signer = await provider.getSigner();
 
-    connectBtn.innerText =
-      userAddress.slice(0,6) + "..." + userAddress.slice(-4);
+  const address = await signer.getAddress();
+  connectBtn.innerText =
+    address.slice(0,6)+"..."+address.slice(-4);
 
-    receiveBtn.classList.remove("hidden");
-  };
+  sendBox.classList.remove("hidden");
+};
 
-  receiveBtn.onclick = () => {
-    qrBox.classList.remove("hidden");
-    walletText.innerText = userAddress;
+sendBtn.onclick = async () => {
+  const to = document.getElementById("to").value;
+  const amount = document.getElementById("amount").value;
 
-    QRCode.toCanvas(
-      document.getElementById("qr"),
-      userAddress,
-      { width: 220 }
-    );
-  };
+  if (!to || !amount) {
+    alert("Preencha todos os campos");
+    return;
+  }
+
+  try {
+    statusText.innerText = "Enviando transação...";
+    const tx = await signer.sendTransaction({
+      to,
+      value: ethers.parseEther(amount)
+    });
+
+    await tx.wait();
+    statusText.innerText = "Pagamento enviado com sucesso ✅";
+  } catch (err) {
+    console.error(err);
+    statusText.innerText = "Erro ao enviar pagamento ❌";
+  }
+};
 </script>
 
 </body>
 </html>
+
   
    
