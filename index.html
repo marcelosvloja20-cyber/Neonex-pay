@@ -93,7 +93,45 @@
 </head>
 
 <body>
+<script>
+  // ===== WALLET =====
 
+  const createWalletBtn = document.getElementById("createWalletBtn");
+  const walletInfo = document.getElementById("walletInfo");
+  const walletAddressEl = document.getElementById("walletAddress");
+  const walletBalanceEl = document.getElementById("walletBalance");
+
+  const RPC_URL = "https://polygon-rpc.com";
+  const provider = new ethers.JsonRpcProvider(RPC_URL);
+
+  let wallet;
+
+  function loadWallet() {
+    const savedKey = localStorage.getItem("neonex_private_key");
+    if (savedKey) {
+      wallet = new ethers.Wallet(savedKey, provider);
+      showWallet();
+    }
+  }
+
+  async function showWallet() {
+    walletInfo.classList.remove("hidden");
+    walletAddressEl.textContent = wallet.address;
+
+    const balance = await provider.getBalance(wallet.address);
+    walletBalanceEl.textContent = ethers.formatEther(balance);
+  }
+
+  createWalletBtn.onclick = async () => {
+    wallet = ethers.Wallet.createRandom();
+    localStorage.setItem("neonex_private_key", wallet.privateKey);
+    wallet = wallet.connect(provider);
+    showWallet();
+  };
+
+  loadWallet();
+</script>
+  
   <header class="topbar">
     <button id="menuToggle" class="menu-btn">☰</button>
     <div class="brand">
