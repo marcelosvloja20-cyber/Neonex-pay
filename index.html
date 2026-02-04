@@ -1,355 +1,161 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEONEX PAY</title>
+  <meta charset="UTF-8">
+  <title>NEONEX PAY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- PWA -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#00e5ff">
+  <link rel="manifest" href="manifest.json">
 
-<style>
-:root{
-  --bg:#0b0b0f;
-  --blue:#00e5ff;
-  --purple:#7b61ff;
-  --text:#ffffff;
-  --muted:#a0a0b5;
-}
-*{
-  box-sizing:border-box;
-  font-family:Inter,system-ui,sans-serif;
-}
-body{
-  background:radial-gradient(circle at top,#141420,var(--bg));
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-  color:var(--text);
-}
-.container{
-  width:100%;
-  max-width:420px;
-  background:linear-gradient(180deg,#111120,#0b0b0f);
-  border-radius:24px;
-  padding:28px;
-  border:1px solid rgba(123,97,255,.25);
-  box-shadow:0 0 40px rgba(0,229,255,.18);
-}
-.badge{
-  font-size:11px;
-  color:var(--blue);
-  margin-bottom:8px;
-}
-h1{
-  font-size:26px;
-  margin-bottom:6px;
-}
-h1 span{color:var(--blue)}
-p{
-  font-size:14px;
-  color:var(--muted);
-  margin-bottom:18px;
-}
-button,input,select{
-  width:100%;
-  padding:14px;
-  border-radius:16px;
-  border:none;
-  margin-top:10px;
-  font-weight:700;
-}
-.primary{
-  background:linear-gradient(135deg,var(--blue),var(--purple));
-  color:#000;
-}
-input,select{
-  background:#0e0e1a;
-  color:#fff;
-  border:1px solid rgba(255,255,255,.1);
-}
-.hidden{display:none}
-.status{
-  font-size:12px;
-  color:var(--muted);
-  margin-top:10px;
-}
-.link-box{
-  font-size:12px;
-  word-break:break-all;
-  background:#0e0e1a;
-  padding:10px;
-  border-radius:12px;
-  margin-top:10px;
-}
-</style>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b0b0f;
+      color: #ffffff;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .menu-btn {
+      font-size: 22px;
+      background: none;
+      border: none;
+      color: #00e5ff;
+      cursor: pointer;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 2px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #aaa;
+      margin: 0;
+    }
+
+    .hero {
+      margin: 32px 16px;
+    }
+
+    .hero-text {
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    .hero-sub {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #9aa0a6;
+    }
+
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100%;
+      background: #0b0b0f;
+      padding: 60px 16px;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.6);
+      z-index: 10;
+    }
+
+    .side-menu a {
+      display: block;
+      margin-bottom: 16px;
+      color: #00e5ff;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    button {
+      padding: 12px 16px;
+      background: #00e5ff;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container">
-  <div class="badge">P2P • ZERO TAXAS</div>
+  <header class="topbar">
+    <button id="menuToggle" class="menu-btn">☰</button>
+    <div class="brand">
+      <h1>NEONEX</h1>
+      <p class="subtitle">Bem-vindo à NEONEX</p>
+    </div>
+  </header>
 
-  <h1>NEONEX <span>PAY</span></h1>
-  <p>Pagamentos rápidos, seguros e sem intermediários</p>
+  <nav id="sideMenu" class="side-menu hidden">
+    <a href="#p2p">💸 Pagamento P2P</a>
+    <a href="#qr">📷 QR Code</a>
+    <a href="#nfc">📡 NFC Tap to Pay</a>
+    <a href="#swap">🔁 Swap</a>
+    <a href="#wallet">👛 Wallet</a>
+    <a href="#about">ℹ️ Sobre</a>
+  </nav>
 
-  <button id="connectBtn" class="primary">Conectar Wallet</button>
-<!-- ================= QR CODE DINÂMICO ================= -->
+  <section class="hero">
+    <p class="hero-text">
+      Pagamentos P2P instantâneos,<br>
+      <strong>0% taxas, você no controle.</strong>
+    </p>
+    <p class="hero-sub">
+      Sem bancos. Sem intermediários.<br>
+      Apenas você e sua crypto.
+    </p>
+  </section>
 
-<button id="qrBtn" class="primary">
-  Gerar QR Code
-</button>
+  <section id="qr" style="padding:16px">
+    <button id="qrBtn">Gerar QR Code</button>
+    <div id="qrBox" class="hidden" style="margin-top:16px;text-align:center">
+      <div id="qrcode"></div>
+    </div>
+  </section>
 
-<div id="qrBox" class="hidden" style="margin-top:16px;text-align:center">
-  <div id="qrcode"></div>
-</div>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script>
+    const menuBtn = document.getElementById("menuToggle");
+    const sideMenu = document.getElementById("sideMenu");
 
-<script>
-const qrBtn = document.getElementById("qrBtn");
-const qrBox = document.getElementById("qrBox");
-const qrContainer = document.getElementById("qrcode");
+    menuBtn.onclick = () => {
+      sideMenu.classList.toggle("hidden");
+    };
 
-qrBtn.onclick = () => {
-  const token = document.getElementById("token").value;
-  const to = document.getElementById("to").value;
-  const amount = document.getElementById("amount").value;
+    const qrBtn = document.getElementById("qrBtn");
+    const qrBox = document.getElementById("qrBox");
+    const qrContainer = document.getElementById("qrcode");
 
-  if (!to || !amount) {
-    alert("Preencha endereço e valor");
-    return;
-  }
+    qrBtn.onclick = () => {
+      qrContainer.innerHTML = "";
+      qrBox.classList.remove("hidden");
 
-  const paymentURL =
-    window.location.origin +
-    window.location.pathname +
-    `?to=${to}&amount=${amount}&token=${token}`;
-
-  qrContainer.innerHTML = "";
-  qrBox.classList.remove("hidden");
-
-  new QRCode(qrContainer, {
-    text: paymentURL,
-    width: 220,
-    height: 220,
-    colorDark: "#00e5ff",
-    colorLight: "#0b0b0f",
-    correctLevel: QRCode.CorrectLevel.H
-  });
-};
-</script>
-
-<!-- =============== FIM QR CODE DINÂMICO =============== -->
-  
-  <div id="sendBox" class="hidden">
-    <select id="token">
-      <option value="USDT">USDT</option>
-      <option value="USDC">USDC</option>
-    </select>
-
-    <input id="to" placeholder="Endereço de destino">
-    <input id="amount" placeholder="Valor">
-
-    <button id="sendBtn" class="primary">Pagar Agora</button>
-    <button id="linkBtn" class="primary">Gerar Link de Pagamento</button>
-
-    <div id="linkBox" class="link-box hidden"></div>
-  </div>
-<!-- ================= NFC TAP TO PAY ================= -->
-<style>
-#nfcSection{
-  margin-top:20px;
-  padding-top:16px;
-  border-top:1px solid rgba(255,255,255,.08);
-}
-</style>
-
-<div id="nfcSection" class="hidden">
-
-  <div class="badge">NFC • TAP TO PAY</div>
-
-  <p style="margin-bottom:10px">
-    Ative o pagamento por aproximação.<br>
-    Encoste o celular do cliente para abrir o pagamento.
-  </p>
-
-  <button id="activateNfcBtn" class="primary">
-    Ativar NFC Crypto
-  </button>
-
-  <div id="nfcStatus" class="status"></div>
-
-</div>
-
-<script>
-/* ================= NFC TAP TO PAY ================= */
-const nfcSection = document.getElementById("nfcSection");
-const activateNfcBtn = document.getElementById("activateNfcBtn");
-const nfcStatus = document.getElementById("nfcStatus");
-
-/* Mostra NFC após conectar wallet */
-const originalConnect = connectBtn.onclick;
-connectBtn.onclick = async () => {
-  await originalConnect();
-  setTimeout(()=>{
-    nfcSection.classList.remove("hidden");
-  },500);
-};
-
-activateNfcBtn.onclick = async () => {
-
-  if (!("NDEFReader" in window)) {
-    nfcStatus.innerText =
-      "❌ NFC não suportado neste dispositivo. Use QR ou link.";
-    return;
-  }
-
-  const token = document.getElementById("token").value;
-  const to = document.getElementById("to").value;
-  const amount = document.getElementById("amount").value;
-
-  if (!to || !amount) {
-    nfcStatus.innerText =
-      "⚠️ Preencha endereço e valor antes de ativar o NFC.";
-    return;
-  }
-
-  const paymentURL =
-    window.location.origin +
-    window.location.pathname +
-    `?to=${to}&amount=${amount}&token=${token}`;
-
-  try {
-    const ndef = new NDEFReader();
-    await ndef.write({
-      records:[
-        { recordType:"url", data:paymentURL }
-      ]
-    });
-
-    nfcStatus.innerText =
-      "✅ NFC ativo! Aproxime o celular do pagador.";
-
-  } catch (err) {
-    console.error(err);
-    nfcStatus.innerText =
-      "❌ Erro ao ativar NFC. Tente novamente.";
-  }
-};
-</script>
-<!-- =============== FIM NFC TAP TO PAY =============== -->
-
-  <div class="status" id="status"></div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
-
-<script>
-let provider, signer;
-
-const TOKENS={
-  USDT:{address:"0xc2132D05D31c914a87C6611C10748AaCbA99DFeD",decimals:6},
-  USDC:{address:"0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",decimals:6}
-};
-
-const ABI=["function transfer(address to,uint amount) returns (bool)"];
-
-const POLYGON={
-  chainId:"0x89",
-  chainName:"Polygon Mainnet",
-  nativeCurrency:{name:"MATIC",symbol:"MATIC",decimals:18},
-  rpcUrls:["https://polygon-rpc.com"],
-  blockExplorerUrls:["https://polygonscan.com"]
-};
-
-async function switchPolygon(){
-  try{
-    await ethereum.request({
-      method:"wallet_switchEthereumChain",
-      params:[{chainId:POLYGON.chainId}]
-    });
-  }catch(e){
-    if(e.code===4902){
-      await ethereum.request({
-        method:"wallet_addEthereumChain",
-        params:[POLYGON]
+      new QRCode(qrContainer, {
+        text: window.location.href,
+        width: 220,
+        height: 220,
+        colorDark: "#00e5ff",
+        colorLight: "#0b0b0f"
       });
-    }else throw e;
-  }
-}
-
-const qs=new URLSearchParams(window.location.search);
-if(qs.get("to"))document.getElementById("to").value=qs.get("to");
-if(qs.get("amount"))document.getElementById("amount").value=qs.get("amount");
-if(qs.get("token"))document.getElementById("token").value=qs.get("token");
-
-const connectBtn=document.getElementById("connectBtn");
-const sendBox=document.getElementById("sendBox");
-const sendBtn=document.getElementById("sendBtn");
-const linkBtn=document.getElementById("linkBtn");
-const statusText=document.getElementById("status");
-const linkBox=document.getElementById("linkBox");
-
-connectBtn.onclick=async()=>{
-  if(!window.ethereum)return alert("Instale MetaMask");
-  await switchPolygon();
-  provider=new ethers.BrowserProvider(window.ethereum);
-  await provider.send("eth_requestAccounts",[]);
-  signer=await provider.getSigner();
-  const addr=await signer.getAddress();
-  connectBtn.innerText=addr.slice(0,6)+"..."+addr.slice(-4);
-  sendBox.classList.remove("hidden");
-};
-
-sendBtn.onclick=async()=>{
-  const t=document.getElementById("token").value;
-  const to=document.getElementById("to").value;
-  const amount=document.getElementById("amount").value;
-  if(!to||!amount)return alert("Preencha tudo");
-  try{
-    statusText.innerText="Enviando pagamento...";
-    const c=new ethers.Contract(TOKENS[t].address,ABI,signer);
-    const v=ethers.parseUnits(amount,TOKENS[t].decimals);
-    const tx=await c.transfer(to,v);
-    await tx.wait();
-    statusText.innerText="Pagamento concluído ✅";
-  }catch(e){
-    console.error(e);
-    statusText.innerText="Erro no pagamento ❌";
-  }
-};
-
-linkBtn.onclick=()=>{
-  const t=document.getElementById("token").value;
-  const to=document.getElementById("to").value;
-  const amount=document.getElementById("amount").value;
-  if(!to||!amount)return alert("Preencha tudo");
-  const url=
-    window.location.origin+
-    window.location.pathname+
-    `?to=${to}&amount=${amount}&token=${t}`;
-  linkBox.innerText=url;
-  linkBox.classList.remove("hidden");
-};
-</script>
-
-<!-- Service Worker -->
-<script>
-if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
+    };
+  </script>
 
 </body>
 </html>
-
-
-
-
-
-  
-   
