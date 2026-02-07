@@ -1,214 +1,155 @@
-<!-- ================= NEONEX PRO: CORE ENGINE ================= -->
-<!-- Dependências seguras via CDN -->
-<script src="https://cdn.jsdelivr.net"></script>
-<script src="https://cdnjs.cloudflare.com"></script>
-<script src="https://cdn.jsdelivr.net"></script>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEONEX | P2P Crypto Ecosystem</title>
 
-<style>
-  :root {
-    --neon-cyan: #00e5ff;
-    --neon-purple: #7c4dff;
-    --glass-bg: rgba(11, 11, 15, 0.85);
-  }
+    <!-- 1. Bibliotecas Essenciais -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com"></script>
+    <script src="https://cdnjs.cloudflare.com"></script>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
 
-  .neonex-main-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 229, 255, 0.2);
-    border-radius: 24px;
-    padding: 24px;
-    margin: 16px;
-    box-shadow: 0 0 30px rgba(0, 229, 255, 0.05);
-  }
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at top right, #1e1b4b, #000000);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(168, 85, 247, 0.3);
+        }
+    </style>
+</head>
+<body class="p-4">
 
-  .balance-display {
-    text-align: center;
-    padding: 20px 0;
-    background: linear-gradient(180deg, rgba(0, 229, 255, 0.1) 0%, transparent 100%);
-    border-radius: 16px;
-    margin-bottom: 20px;
-  }
+    <!-- Container Principal da NEONEX -->
+    <main class="w-full max-w-md space-y-6">
+        
+        <!-- Header -->
+        <header class="flex justify-between items-center px-2">
+            <div>
+                <h1 class="text-2xl font-800 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 leading-none">NEONEX</h1>
+                <p class="text-[10px] text-gray-400 tracking-widest uppercase">Decentralized P2P</p>
+            </div>
+            <button id="connectWallet" class="glass px-4 py-2 text-sm font-semibold flex items-center gap-2 hover:bg-white/10 transition-all border border-white/10">
+                <i data-lucide="wallet" class="w-4 h-4 text-indigo-400"></i>
+                <span id="walletText">Conectar Carteira</span>
+            </button>
+        </header>
 
-  .crypto-value {
-    font-size: 32px;
-    font-weight: 800;
-    color: var(--neon-cyan);
-    text-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
-  }
+        <!-- Card de Saldo -->
+        <section class="glass p-8 relative overflow-hidden neon-glow">
+            <div class="relative z-10 text-center">
+                <p class="text-gray-400 text-sm mb-1">Saldo na Polygon</p>
+                <h2 id="balance" class="text-4xl font-bold mb-6">0.00 <span class="text-lg text-indigo-400 font-light ml-1">POL</span></h2>
+                <div class="flex gap-3">
+                    <button onclick="sendTx()" class="flex-1 btn-primary py-3 rounded-xl font-bold flex items-center justify-center gap-2">
+                        <i data-lucide="zap" class="w-5 h-5"></i> Pagamento Turbo
+                    </button>
+                </div>
+            </div>
+            <!-- Decoração visual -->
+            <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-indigo-600/20 blur-3xl rounded-full"></div>
+        </section>
 
-  .neonex-input-group {
-    position: relative;
-    margin-bottom: 15px;
-  }
+        <!-- Atalhos Rápidos -->
+        <section class="grid grid-cols-2 gap-4">
+            <div class="glass p-4 cursor-pointer hover:border-indigo-500/50 transition-all group">
+                <div class="bg-indigo-500/10 w-10 h-10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-indigo-500/20">
+                    <i data-lucide="shield-check" class="w-5 h-5 text-indigo-400"></i>
+                </div>
+                <h3 class="font-semibold text-sm">Privacidade</h3>
+                <p class="text-[10px] text-gray-500 uppercase tracking-tight font-bold">Modo Invisível</p>
+            </div>
+            <div class="glass p-4 cursor-pointer hover:border-purple-500/50 transition-all group">
+                <div class="bg-purple-500/10 w-10 h-10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-purple-500/20">
+                    <i data-lucide="coins" class="w-5 h-5 text-purple-400"></i>
+                </div>
+                <h3 class="font-semibold text-sm">NEX Token</h3>
+                <p class="text-[10px] text-gray-500 uppercase tracking-tight font-bold">Breve</p>
+            </div>
+        </section>
 
-  .neonex-input-group input {
-    width: 100%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(0, 229, 255, 0.2);
-    padding: 14px;
-    border-radius: 12px;
-    color: #fff;
-    transition: 0.3s;
-  }
+        <!-- Status da Rede -->
+        <div class="px-2 flex items-center gap-2">
+            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <p class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Rede Polygon Ativa (Taxas Zero)</p>
+        </div>
 
-  .neonex-input-group input:focus {
-    border-color: var(--neon-cyan);
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
-    outline: none;
-  }
+        <footer class="text-center py-4 border-t border-white/5">
+            <p class="text-[10px] text-gray-600 uppercase tracking-[4px]">Powered by Neonex Protocol</p>
+        </footer>
+    </main>
 
-  .action-btn {
-    width: 100%;
-    padding: 16px;
-    border-radius: 14px;
-    border: none;
-    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
-    color: #000;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+    <!-- LÓGICA DO PROJETO -->
+    <script>
+        // Inicializa os ícones do Lucide
+        lucide.createIcons();
 
-  .action-btn:active { transform: scale(0.98); }
+        let provider, signer, address;
 
-  #qrcode {
-    background: white;
-    padding: 12px;
-    border-radius: 12px;
-    display: inline-block;
-    margin-top: 15px;
-  }
-</style>
+        async function connect() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    // Inicia o provider usando Ethers.js v6
+                    provider = new ethers.BrowserProvider(window.ethereum);
+                    
+                    // Solicita as contas
+                    const accounts = await provider.send("eth_requestAccounts", []);
+                    address = accounts[0];
+                    signer = await provider.getSigner();
 
-<section class="neonex-main-card">
-  <!-- Status da Rede -->
-  <div style="display:flex; justify-content: space-between; font-size: 10px; color: var(--neon-cyan); margin-bottom: 15px;">
-    <span>● POLYGON MAINNET</span>
-    <span id="network-status">LATÊNCIA: --ms</span>
-  </div>
+                    // Atualiza a Interface
+                    document.getElementById('walletText').innerText = address.substring(0,6) + '...' + address.substring(38);
+                    
+                    // Busca saldo real na Polygon
+                    const balanceRaw = await provider.getBalance(address);
+                    const balanceFormatted = ethers.formatEther(balanceRaw);
+                    document.getElementById('balance').innerHTML = `${parseFloat(balanceFormatted).toFixed(4)} <span class="text-lg text-indigo-400 font-light ml-1">POL</span>`;
 
-  <!-- Display de Saldo -->
-  <div class="balance-display">
-    <p style="font-size: 12px; color: #aaa; margin:0">SALDO DISPONÍVEL</p>
-    <div class="crypto-value"><span id="display-balance">0.00</span> <small style="font-size: 14px">POL</small></div>
-    <p id="display-address" style="font-size: 10px; color: #666; margin-top: 8px; cursor: pointer;">Clique para copiar endereço</p>
-  </div>
+                    console.log("Conectado com sucesso à NEONEX!");
+                } catch (error) {
+                    console.error("Erro na conexão:", error);
+                    alert("Conexão cancelada.");
+                }
+            } else {
+                alert("Por favor, instale a MetaMask ou Trust Wallet!");
+                window.open('https://metamask.io', '_blank');
+            }
+        }
 
-  <!-- Terminal de Operações -->
-  <div id="setup-area">
-    <button class="action-btn" onclick="initWallet()">Acessar Terminal NEONEX</button>
-  </div>
+        async function sendTx() {
+            if (!address) {
+                alert("Conecte sua carteira primeiro!");
+                return;
+            }
+            alert("Preparando transação via NEONEX Turbo (Zero Fee)...");
+            // Aqui entrará a integração com a sua API /api/pay.js que criamos
+        }
 
-  <div id="terminal-area" class="hidden">
-    <div class="neonex-input-group">
-      <input type="text" id="target-addr" placeholder="Endereço de Destino (0x...)">
-    </div>
-    <div class="neonex-input-group">
-      <input type="number" id="target-amount" placeholder="Valor (POL)">
-    </div>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-      <button class="action-btn" style="background: #1a1a20; color: #fff; border: 1px solid var(--neon-cyan);" onclick="generatePaymentQR()">Gerar QR</button>
-      <button class="action-btn" onclick="executeTransfer()">Pagar Agora</button>
-    </div>
-
-    <div id="qr-display" class="hidden" style="text-align: center;">
-      <div id="qrcode-container"></div>
-      <p style="font-size: 10px; margin-top: 8px;">Padrão EIP-681 Interoperável</p>
-    </div>
-  </div>
-</section>
-
-<script>
-  // Configurações de Infraestrutura 2026
-  const CONFIG = {
-    rpc: "https://polygon-rpc.com", // Em escala, troque por Alchemy/Quicknode
-    chain: 137,
-    symbol: "POL" // Polygon mudou MATIC para POL
-  };
-
-  const provider = new ethers.JsonRpcProvider(CONFIG.rpc);
-  let userWallet = null;
-
-  // 1. Inicialização de Carteira com Criptografia Simples
-  async function initWallet() {
-    let privKey = localStorage.getItem("_nx_pk");
-    
-    if (!privKey) {
-      const newWallet = ethers.Wallet.createRandom();
-      // Em produção, solicite um PIN ao usuário para encriptar aqui
-      privKey = newWallet.privateKey;
-      localStorage.setItem("_nx_pk", privKey);
-    }
-
-    userWallet = new ethers.Wallet(privKey, provider);
-    document.getElementById("setup-area").classList.add("hidden");
-    document.getElementById("terminal-area").classList.remove("hidden");
-    refreshData();
-  }
-
-  // 2. Atualização de Dados (Stress Test Ready)
-  async function refreshData() {
-    if (!userWallet) return;
-    try {
-      const start = Date.now();
-      const balance = await provider.getBalance(userWallet.address);
-      const latency = Date.now() - start;
-      
-      document.getElementById("display-balance").textContent = parseFloat(ethers.formatEther(balance)).toFixed(4);
-      document.getElementById("display-address").textContent = userWallet.address.shorten();
-      document.getElementById("network-status").textContent = `LATÊNCIA: ${latency}ms`;
-    } catch (e) {
-      console.error("Erro RPC:", e);
-    }
-  }
-
-  // 3. Gerador de QR Code Inteligente (Padrão Bancário Cripto)
-  function generatePaymentQR() {
-    const amount = document.getElementById("target-amount").value;
-    const container = document.getElementById("qrcode-container");
-    container.innerHTML = "";
-    
-    // Padrão EIP-681: ethereum:0x.../transfer?value=...
-    const paymentUri = `ethereum:${userWallet.address}@${CONFIG.chain}/transfer?value=${amount}`;
-    
-    new QRCode(container, {
-      text: paymentUri,
-      width: 180,
-      height: 180,
-      colorDark: "#00e5ff",
-      colorLight: "#0b0b0f"
-    });
-    document.getElementById("qr-display").classList.remove("hidden");
-  }
-
-  // 4. Execução de Transferência (Fast Path)
-  async function executeTransfer() {
-    const to = document.getElementById("target-addr").value;
-    const val = document.getElementById("target-amount").value;
-
-    if(!ethers.isAddress(to)) return alert("Endereço Inválido");
-
-    try {
-      const tx = await userWallet.sendTransaction({
-        to: to,
-        value: ethers.parseEther(val)
-      });
-      alert(`Enviado! Hash: ${tx.hash.substring(0,10)}...`);
-    } catch (e) {
-      alert("Erro na rede. Verifique o saldo de Gás.");
-    }
-  }
-
-  // Helper para encurtar endereço
-  String.prototype.shorten = function() {
-    return this.substring(0, 6) + "..." + this.substring(this.length - 4);
-  };
-
-  // Auto-refresh (Pooling Eficiente)
-  setInterval(refreshData, 15000);
+        // Event Listener do botão
+        document.getElementById('connectWallet').addEventListener('click', connect);
     </script>
-    
+</body>
+</html>
