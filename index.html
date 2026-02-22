@@ -3,184 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEONEX | Social P2P Ecosystem</title>
-
-    <!-- 1. IMPORTAÇÕES DE BIBLIOTECAS (MOTORES) -->
-    <script src="https://cdn.jsdelivr.net"></script>
+    <title>NEONEX | P2P Ecosystem</title>
     <script src="https://cdnjs.cloudflare.com"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
-
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #000; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; }
         .btn-neon { background: linear-gradient(90deg, #6366f1, #a855f7); transition: 0.3s; border: none; cursor: pointer; }
         .btn-neon:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
         input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; color: white; outline: none; width: 100%; font-size: 14px; }
-        input:focus { border-color: #6366f1; }
     </style>
 </head>
 <body class="p-4">
 
-    <!-- ESTRUTURA VISUAL -->
     <main class="w-full max-w-md space-y-6">
-        
-        <!-- Header com Nome da Plataforma e Botão de Login -->
         <header class="flex justify-between items-center px-2">
             <div>
-                <h1 class="text-2xl font-800 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">NEONEX</h1>
-                <p class="text-[8px] text-gray-500 uppercase tracking-[3px]">Blockchain P2P v3.0</p>
+                <h1 class="text-2xl font-800 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 leading-none">NEONEX</h1>
+                <p class="text-[8px] text-gray-500 uppercase tracking-[4px]">Decentralized P2P</p>
             </div>
-            <button id="connectBtn" class="glass px-4 py-2 text-[10px] font-bold uppercase border border-white/10 hover:bg-white/5 transition-all">
-                Login Social
+            <button id="connectBtn" onclick="connectWallet()" class="glass px-4 py-2 text-[10px] font-bold uppercase border border-white/10 hover:bg-white/5 transition-all">
+                Conectar
             </button>
         </header>
 
-        <!-- Registro de Identidade (Aparece após login) -->
-        <section id="regSection" class="glass p-4 hidden border-indigo-500/30 border animate-pulse">
-            <p class="text-[10px] text-indigo-400 font-bold uppercase mb-2">Vincular Identidade @Neonex</p>
+        <!-- Registro de Identidade (Supabase) -->
+        <section id="regSection" class="glass p-4 hidden border-indigo-500/30 border">
+            <p class="text-[10px] text-indigo-400 font-bold uppercase mb-2">Sua Identidade @Neonex</p>
             <div class="flex gap-2">
                 <input type="text" id="newUsername" placeholder="@seu_nome" class="text-xs">
                 <button onclick="registerName()" class="btn-neon px-4 rounded-xl text-[10px] font-bold">CRIAR</button>
             </div>
         </section>
 
-        <!-- Card de Pagamento Principal -->
+        <!-- Card Principal -->
         <section class="glass p-6 space-y-5">
             <div class="text-center pb-4 border-b border-white/5">
-                <p class="text-gray-400 text-[10px] uppercase tracking-widest mb-1">Saldo Disponível (Polygon)</p>
+                <p class="text-gray-400 text-[10px] uppercase tracking-widest mb-1">Saldo Polygon</p>
                 <h2 id="balance" class="text-3xl font-bold">0.00 POL</h2>
             </div>
 
             <div class="space-y-4">
-                <div>
-                    <label class="text-[10px] uppercase text-gray-500 font-bold ml-1 mb-2 block">Destinatário</label>
-                    <input type="text" id="target" placeholder="@usuario ou endereço 0x...">
+                <input type="text" id="target" placeholder="Para: @usuario ou 0x...">
+                <input type="number" id="amount" placeholder="Valor" oninput="updateTotal()">
+                
+                <div class="bg-white/5 rounded-xl p-3 text-[11px] flex justify-between items-center">
+                    <span class="text-gray-500">Taxa NEONEX: <b class="text-indigo-400">0.05 POL</b></span>
+                    <span id="totalDisplay" class="font-bold text-sm">Total: 0.00 POL</span>
                 </div>
                 
-                <div>
-                    <label class="text-[10px] uppercase text-gray-500 font-bold ml-1 mb-2 block">Valor para Enviar</label>
-                    <input type="number" id="amount" placeholder="0.00" oninput="updateTotal()">
-                </div>
-
-                <!-- Resumo da Taxa NEONEX -->
-                <div class="bg-white/5 rounded-xl p-4 space-y-2 text-[11px]">
-                    <div class="flex justify-between text-gray-400">
-                        <span>Taxa de Serviço NEONEX</span>
-                        <span class="text-indigo-400 font-bold">+ 0.05 POL</span>
-                    </div>
-                    <div class="flex justify-between text-sm font-bold border-t border-white/5 pt-2">
-                        <span>Total a Debitar</span>
-                        <span id="totalDisplay">0.00 POL</span>
-                    </div>
-                </div>
-                
-                <button id="sendBtn" onclick="processPayment()" class="w-full btn-neon py-4 rounded-xl font-800 text-xs uppercase tracking-[2px] shadow-xl shadow-indigo-500/10">
-                    Confirmar Envio P2P
+                <button id="sendBtn" onclick="processPayment()" class="w-full btn-neon py-4 rounded-xl font-800 text-xs uppercase tracking-[2px]">
+                    Confirmar Envio
                 </button>
             </div>
         </section>
 
-        <!-- Rodapé Status -->
         <footer class="text-center">
-            <p class="text-[8px] text-gray-600 uppercase tracking-[5px]">Gerando Blockchain Segura...</p>
+            <p class="text-[8px] text-gray-600 uppercase tracking-[5px]">Protocolo Seguro v3.1</p>
         </footer>
-
     </main>
 
-    <!-- 2. LÓGICA DE PROGRAMAÇÃO NEONEX 2026 -->
     <script>
-        // CONFIGURAÇÃO ESSENCIAL: Cole seu Client ID abaixo (Pegue em dashboard.web3auth.io)
-        const clientId = "SEU_CLIENT_ID_AQUI"; 
-        
-        let web3auth, provider, address;
+        let provider, signer, address;
 
-        // Inicializa o Web3Auth ao carregar a página
-        async function init() {
-            lucide.createIcons();
-            web3auth = new window.Modal.Web3Auth({
-                clientId,
-                chainConfig: {
-                    chainNamespace: "eip155",
-                    chainId: "0x89", // Rede Polygon Mainnet
-                    rpcTarget: "https://polygon-rpc.com",
-                },
-                web3AuthNetwork: "cyan", // Rede de alta velocidade
-            });
+        async function connectWallet() {
+            if (window.ethereum) {
+                try {
+                    provider = new ethers.BrowserProvider(window.ethereum);
+                    const acc = await provider.send("eth_requestAccounts", []);
+                    address = acc[0];
+                    signer = await provider.getSigner();
 
-            await web3auth.initModal();
-        }
-
-        // Função de Login Social com Google/E-mail
-        async function loginSocial() {
-            try {
-                const web3authProvider = await web3auth.connect();
-                provider = new ethers.BrowserProvider(web3authProvider);
-                
-                const signer = await provider.getSigner();
-                address = await signer.getAddress();
-
-                // Atualiza a Interface com o endereço ou um ID curto
-                document.getElementById('connectBtn').innerText = "@" + address.slice(2,8).toUpperCase();
-                document.getElementById('regSection').classList.remove('hidden');
-                
-                updateBalance();
-                console.log("NEONEX: Login concluído com sucesso.");
-            } catch (error) {
-                console.error("Falha no Login:", error);
+                    document.getElementById('connectBtn').innerText = address.slice(0,6) + "...";
+                    document.getElementById('regSection').classList.remove('hidden');
+                    updateBalance();
+                    lucide.createIcons();
+                } catch (err) { alert("Conexão negada."); }
+            } else {
+                alert("Instale a MetaMask ou use um navegador Web3.");
             }
         }
 
-        // Busca o saldo real na rede Polygon
         async function updateBalance() {
-            if (!provider) return;
             const bal = await provider.getBalance(address);
-            const formattedBal = parseFloat(ethers.formatEther(bal)).toFixed(4);
-            document.getElementById('balance').innerText = formattedBal + " POL";
+            document.getElementById('balance').innerText = parseFloat(ethers.formatEther(bal)).toFixed(4) + " POL";
         }
 
-        // Atualiza o cálculo da taxa em tempo real
         function updateTotal() {
-            const amt = parseFloat(document.getElementById('amount').value) || 0;
-            const total = (amt > 0) ? (amt + 0.05).toFixed(4) : "0.00";
-            document.getElementById('totalDisplay').innerText = total + " POL";
+            const val = parseFloat(document.getElementById('amount').value) || 0;
+            document.getElementById('totalDisplay').innerText = `Total: ${(val + 0.05).toFixed(4)} POL`;
         }
 
-        // Função para chamar sua API na Vercel (Onde a mágica acontece)
+        async function registerName() {
+            const user = document.getElementById('newUsername').value;
+            if(!user.startsWith('@')) return alert("Use @ no início!");
+            const res = await fetch('/api/transfer', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ action: 'register', username: user, wallet: address })
+            });
+            const data = await res.json();
+            data.success ? alert("Registrado com sucesso!") : alert(data.error);
+        }
+
         async function processPayment() {
-            if (!address) return alert("Por favor, faça Login Social primeiro.");
-            
+            if (!address) return alert("Conecte a carteira!");
             const target = document.getElementById('target').value;
             const amount = document.getElementById('amount').value;
 
-            if (!target || !amount) return alert("Preencha o destinatário e o valor.");
-
-            alert("Iniciando Transação NEONEX via Polygon...");
-            
-            // Aqui o código faz o fetch para /api/transfer.js (que você já configurou)
-            try {
-                const res = await fetch('/api/transfer', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ to: target, amount: amount })
-                });
-                const data = await res.json();
-                if(data.success) {
-                    alert("Sucesso! Hash da Transação: " + data.hash);
-                    updateBalance();
-                } else {
-                    alert("Erro no servidor: " + data.error);
-                }
-            } catch (err) {
-                console.error(err);
-                alert("Falha na comunicação com a API.");
-            }
+            const res = await fetch('/api/transfer', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ to: target, amount: amount })
+            });
+            const data = await res.json();
+            data.success ? alert("Enviado! Hash: " + data.hash) : alert(data.error);
         }
 
-        // Inicia o sistema
-        window.onload = init;
-        document.getElementById('connectBtn').addEventListener('click', loginSocial);
+        window.onload = () => lucide.createIcons();
     </script>
 </body>
 </html>
