@@ -9,6 +9,7 @@
     <script src="https://cdnjs.cloudflare.com"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com"></script>
+    <script src="https://cdnjs.cloudflare.com"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     
     <style>
@@ -17,41 +18,42 @@
         .neon-border { border: 1px solid rgba(99, 102, 241, 0.3); box-shadow: 0 0 20px rgba(99, 102, 241, 0.1); }
         .btn-neon { background: linear-gradient(90deg, #6366f1, #a855f7); transition: 0.3s; border: none; cursor: pointer; color: white; }
         .btn-neon:hover { transform: scale(1.02); box-shadow: 0 0 25px rgba(168, 85, 247, 0.4); }
-        .btn-neon:disabled { opacity: 0.5; cursor: not-allowed; }
         input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 16px; color: white; outline: none; width: 100%; transition: 0.3s; }
-        input:focus { border-color: #6366f1; background: rgba(255,255,255,0.08); }
-        .receipt-gradient { background: linear-gradient(180deg, rgba(34, 197, 94, 0.1) 0%, rgba(0, 0, 0, 0) 100%); }
+        #qrcode img { margin: 0 auto; border-radius: 12px; border: 4px solid white; }
     </style>
 </head>
 <body class="p-4">
 
-    <!-- APP PRINCIPAL -->
     <main class="w-full max-w-md space-y-6 relative z-10">
-        
         <!-- Header -->
         <header class="flex justify-between items-center px-2">
             <div>
-                <h1 class="text-2xl font-800 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 leading-none">NEONEX</h1>
-                <p class="text-[8px] text-gray-500 uppercase tracking-[4px]">Blockchain P2P v3.5</p>
-            </div>
-            <button id="connectBtn" onclick="connectWallet()" class="glass px-4 py-2 text-[10px] font-bold uppercase border border-white/10 hover:bg-white/5 transition-all">
-                Conectar
-            </button>
-        </header>
-
-        <!-- Registro de Identidade @Nome -->
-        <section id="regSection" class="glass p-5 hidden neon-border animate-in fade-in zoom-in duration-300">
-            <div class="flex items-center gap-2 mb-3">
-                <i data-lucide="user-plus" class="w-4 h-4 text-indigo-400"></i>
-                <p class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider">Criar Identidade Digital</p>
+                <h1 class="text-2xl font-800 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 leading-none text-[32px]">NEONEX</h1>
+                <p class="text-[8px] text-gray-500 uppercase tracking-[4px]">Blockchain P2P v4.0</p>
             </div>
             <div class="flex gap-2">
-                <input type="text" id="newUsername" placeholder="@seu_nome" class="text-sm py-3">
+                <button onclick="showReceiveModal()" class="glass p-3 rounded-full hover:bg-white/5 border border-white/10">
+                    <i data-lucide="qr-code" class="w-4 h-4 text-indigo-400"></i>
+                </button>
+                <button id="connectBtn" onclick="connectWallet()" class="glass px-4 py-2 text-[10px] font-bold uppercase border border-white/10 hover:bg-white/5 transition-all">
+                    Conectar
+                </button>
+            </div>
+        </header>
+
+        <!-- Registro @Nome -->
+        <section id="regSection" class="glass p-5 hidden neon-border">
+            <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="at-sign" class="w-4 h-4 text-indigo-400"></i>
+                <p class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider">Registrar Identidade</p>
+            </div>
+            <div class="flex gap-2">
+                <input type="text" id="newUsername" placeholder="@usuario" class="text-sm py-3">
                 <button onclick="registerName()" class="btn-neon px-6 rounded-xl text-[10px] font-bold">CRIAR</button>
             </div>
         </section>
 
-        <!-- Card de Operações -->
+        <!-- Card Principal -->
         <section class="glass p-8 space-y-6 shadow-2xl">
             <div class="text-center pb-6 border-b border-white/5">
                 <p class="text-gray-400 text-[10px] uppercase tracking-[3px] mb-2">Saldo em Conta</p>
@@ -59,141 +61,103 @@
             </div>
 
             <div class="space-y-4">
-                <div class="relative">
-                    <i data-lucide="at-sign" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
-                    <input type="text" id="target" placeholder="Destinatário (@nome ou 0x)" class="pl-11">
-                </div>
+                <input type="text" id="target" placeholder="Para: @usuario ou 0x...">
+                <input type="number" id="amount" placeholder="Valor" oninput="updateTotal()">
                 
-                <div class="relative">
-                    <i data-lucide="banknote" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
-                    <input type="number" id="amount" placeholder="Valor do envio" class="pl-11" oninput="updateTotal()">
-                </div>
-                
-                <!-- Painel de Taxas -->
                 <div class="bg-white/5 rounded-2xl p-4 space-y-2 border border-white/5">
-                    <div class="flex justify-between text-[10px] text-gray-500 uppercase font-bold">
-                        <span>Taxa de Processamento</span>
+                    <div class="flex justify-between text-[10px] text-gray-500 font-bold">
+                        <span>TAXA NEONEX</span>
                         <span class="text-indigo-400">+ 0.05 POL</span>
                     </div>
                     <div class="flex justify-between text-sm font-bold pt-2 border-t border-white/10">
-                        <span>Total a Debitar</span>
+                        <span>TOTAL</span>
                         <span id="totalDisplay" class="text-purple-400">0.00 POL</span>
                     </div>
                 </div>
                 
-                <button id="sendBtn" onclick="processPayment()" class="w-full btn-neon py-5 rounded-2xl font-800 text-xs uppercase tracking-[3px] shadow-lg">
-                    Confirmar Pagamento
+                <button id="sendBtn" onclick="processPayment()" class="w-full btn-neon py-5 rounded-2xl font-800 text-xs uppercase tracking-[3px]">
+                    Enviar Pagamento
                 </button>
             </div>
         </section>
-
-        <!-- Footer -->
-        <footer class="flex flex-col items-center gap-2 opacity-40">
-            <div class="w-1 h-1 bg-indigo-500 rounded-full animate-ping"></div>
-            <p class="text-[7px] uppercase tracking-[6px]">Secure Blockchain Network</p>
-        </footer>
     </main>
 
-    <!-- MODAL DE COMPROVANTE (O "PIX" CRYPTO) -->
-    <div id="receiptModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="glass w-full max-w-sm p-8 text-center space-y-6 neon-border receipt-gradient">
-            <div class="flex justify-center">
-                <div class="bg-green-500/20 p-4 rounded-full">
-                    <i data-lucide="check-circle" class="w-12 h-12 text-green-400"></i>
-                </div>
-            </div>
-            <div>
-                <h3 class="text-xl font-800">Pagamento Concluído</h3>
-                <p class="text-[10px] text-green-500 font-bold uppercase tracking-[4px]">Sucesso na Rede Polygon</p>
-            </div>
-            
-            <div class="bg-black/40 rounded-3xl p-5 space-y-4 text-left border border-white/5">
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-500 text-[9px] uppercase font-bold tracking-widest">Para</span>
-                    <span id="rec-to" class="font-bold text-indigo-400">@usuario</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-500 text-[9px] uppercase font-bold tracking-widest">Valor</span>
-                    <span id="rec-amt" class="font-bold text-white text-lg">0.00 POL</span>
-                </div>
-                <div class="pt-3 border-t border-white/10">
-                    <span class="text-gray-500 text-[9px] uppercase font-bold tracking-widest block mb-2">ID da Transação</span>
-                    <div id="rec-hash" class="text-[8px] text-gray-500 break-all font-mono leading-relaxed bg-white/5 p-2 rounded-lg">0x...</div>
-                </div>
-            </div>
-
-            <div class="flex flex-col gap-3">
-                <button onclick="shareReceipt()" class="w-full btn-neon py-4 rounded-xl text-[10px] font-800 uppercase tracking-widest flex items-center justify-center gap-2">
-                    <i data-lucide="share-2" class="w-4 h-4"></i> Compartilhar Comprovante
-                </button>
-                <button onclick="closeReceipt()" class="text-[10px] font-bold text-gray-500 uppercase tracking-widest py-2">Voltar ao Início</button>
-            </div>
+    <!-- MODAL RECEBER (QR CODE) -->
+    <div id="receiveModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="glass w-full max-w-sm p-8 text-center space-y-6 neon-border">
+            <h3 class="text-xl font-800 uppercase tracking-tighter">Receber via NEONEX</h3>
+            <div id="qrcode" class="p-4 bg-white rounded-2xl inline-block mx-auto"></div>
+            <p id="myAddressText" class="text-[9px] text-gray-500 font-mono break-all px-4">Conecte sua carteira</p>
+            <button onclick="closeReceiveModal()" class="w-full py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Fechar</button>
         </div>
     </div>
 
-    <!-- LÓGICA DE PROGRAMAÇÃO -->
+    <!-- MODAL COMPROVANTE -->
+    <div id="receiptModal" class="fixed inset-0 bg-black/95 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="glass w-full max-w-sm p-8 text-center space-y-6 neon-border">
+            <div class="flex justify-center"><div class="bg-green-500/20 p-4 rounded-full"><i data-lucide="check-circle" class="w-12 h-12 text-green-400"></i></div></div>
+            <h3 class="text-xl font-800">Pagamento Concluído</h3>
+            <div class="bg-black/40 rounded-3xl p-5 space-y-4 text-left border border-white/5 text-xs">
+                <div class="flex justify-between"><span>Para:</span><span id="rec-to" class="font-bold text-indigo-400">@usuario</span></div>
+                <div class="flex justify-between"><span>Valor:</span><span id="rec-amt" class="font-bold">0.00 POL</span></div>
+                <div class="pt-3 border-t border-white/10"><span class="text-gray-500 block text-[9px]">HASH</span><div id="rec-hash" class="text-[8px] break-all opacity-50">0x...</div></div>
+            </div>
+            <button onclick="shareReceipt()" class="w-full btn-neon py-4 rounded-xl text-[10px] font-800 uppercase flex items-center justify-center gap-2"><i data-lucide="share-2" class="w-4 h-4"></i> COMPARTILHAR</button>
+            <button onclick="closeReceipt()" class="text-xs text-gray-500 font-bold uppercase">Sair</button>
+        </div>
+    </div>
+
     <script>
         lucide.createIcons();
-        let provider, signer, address;
-        const FEE = 0.05;
+        let provider, address;
 
-        // 1. Conexão com Carteira
         async function connectWallet() {
             if (window.ethereum) {
-                try {
-                    provider = new ethers.BrowserProvider(window.ethereum);
-                    const acc = await provider.send("eth_requestAccounts", []);
-                    address = acc[0];
-                    signer = await provider.getSigner();
-
-                    document.getElementById('connectBtn').innerText = address.slice(0,6) + "..." + address.slice(-4);
-                    document.getElementById('regSection').classList.remove('hidden');
-                    updateBalance();
-                } catch (err) { console.error("Conexão negada pelo usuário."); }
-            } else {
-                alert("Por favor, use a MetaMask ou uma carteira Web3.");
+                provider = new ethers.BrowserProvider(window.ethereum);
+                const acc = await provider.send("eth_requestAccounts", []);
+                address = acc[0];
+                document.getElementById('connectBtn').innerText = address.slice(0,6)+"...";
+                document.getElementById('regSection').classList.remove('hidden');
+                updateBalance();
             }
         }
 
-        // 2. Atualiza Saldo Real
         async function updateBalance() {
-            if (!address) return;
             const bal = await provider.getBalance(address);
-            document.getElementById('balance').innerHTML = `${parseFloat(ethers.formatEther(bal)).toFixed(4)} <span class="text-indigo-500 text-lg font-light">POL</span>`;
+            document.getElementById('balance').innerHTML = `${parseFloat(ethers.formatEther(bal)).toFixed(4)} <span class="text-indigo-500 text-lg">POL</span>`;
         }
 
-        // 3. Cálculo de Taxa em Tempo Real
         function updateTotal() {
             const val = parseFloat(document.getElementById('amount').value) || 0;
-            document.getElementById('totalDisplay').innerText = (val > 0 ? (val + FEE).toFixed(4) : "0.00") + " POL";
+            document.getElementById('totalDisplay').innerText = (val > 0 ? (val + 0.05).toFixed(4) : "0.00") + " POL";
         }
 
-        // 4. Registro de Nome no Banco (Supabase via API)
         async function registerName() {
             const user = document.getElementById('newUsername').value;
-            if(!user.startsWith('@') || user.length < 3) return alert("O nome deve começar com @ e ter 3 letras.");
-            
             const res = await fetch('/api/transfer', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ action: 'register', username: user, wallet: address })
             });
             const data = await res.json();
-            if(data.success) {
-                alert("Identidade Digital @Neonex Criada!");
-                document.getElementById('regSection').innerHTML = `<p class="text-xs text-center text-indigo-400 font-bold py-2">Bem-vindo, ${user}</p>`;
-            } else { alert(data.error); }
+            data.success ? alert("Identidade Criada!") : alert(data.error);
         }
 
-        // 5. Processamento de Pagamento com Comprovante
+        function showReceiveModal() {
+            if(!address) return alert("Conecte a carteira!");
+            document.getElementById('receiveModal').classList.replace('hidden', 'flex');
+            document.getElementById('qrcode').innerHTML = "";
+            new QRCode(document.getElementById("qrcode"), { text: address, width: 200, height: 200 });
+            document.getElementById('myAddressText').innerText = address;
+        }
+
+        function closeReceiveModal() { document.getElementById('receiveModal').classList.replace('flex', 'hidden'); }
+
         async function processPayment() {
             const to = document.getElementById('target').value;
             const amount = document.getElementById('amount').value;
             const btn = document.getElementById('sendBtn');
-
-            if (!address || !to || !amount) return alert("Preencha todos os campos e conecte a carteira.");
-
-            btn.innerText = "PROCESSANDO NA BLOCKCHAIN...";
+            btn.innerText = "PROCESSANDO...";
             btn.disabled = true;
 
             try {
@@ -202,48 +166,24 @@
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ to, amount })
                 });
-                
                 const data = await res.json();
-
-                if (data.success) {
-                    // Preenche o Comprovante Visual
+                if(data.success) {
                     document.getElementById('rec-to').innerText = to;
                     document.getElementById('rec-amt').innerText = amount + " POL";
                     document.getElementById('rec-hash').innerText = data.hash;
-                    
-                    // Exibe o Modal
-                    document.getElementById('receiptModal').classList.remove('hidden');
-                    document.getElementById('receiptModal').classList.add('flex');
-                    lucide.createIcons();
+                    document.getElementById('receiptModal').classList.replace('hidden', 'flex');
                     updateBalance();
-                } else {
-                    alert("Erro NEONEX: " + data.error);
-                }
-            } catch (err) {
-                alert("Falha crítica de comunicação com o servidor.");
-            } finally {
-                btn.innerText = "Confirmar Pagamento";
-                btn.disabled = false;
-            }
+                } else { alert(data.error); }
+            } catch (err) { alert("Erro de rede."); }
+            btn.innerText = "Enviar Pagamento"; btn.disabled = false;
         }
 
-        // Funções do Modal
-        function closeReceipt() {
-            document.getElementById('receiptModal').classList.add('hidden');
-            document.getElementById('receiptModal').classList.remove('flex');
-        }
+        function closeReceipt() { document.getElementById('receiptModal').classList.replace('flex', 'hidden'); }
 
         function shareReceipt() {
-            const text = `🚀 Pagamento NEONEX Concluído!\n\nEnviado: ${document.getElementById('rec-amt').innerText}\nPara: ${document.getElementById('rec-to').innerText}\nID: ${document.getElementById('rec-hash').innerText}\n\nEnviado via Protocolo P2P Neonex.`;
-            if (navigator.share) {
-                navigator.share({ title: 'Comprovante NEONEX', text: text });
-            } else {
-                navigator.clipboard.writeText(text);
-                alert("Comprovante copiado!");
-            }
+            const text = `Enviado ${document.getElementById('rec-amt').innerText} via NEONEX! Hash: ${document.getElementById('rec-hash').innerText}`;
+            navigator.clipboard.writeText(text); alert("Copiado!");
         }
-
-        window.onload = () => lucide.createIcons();
     </script>
 </body>
 </html>
