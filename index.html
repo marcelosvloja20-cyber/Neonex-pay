@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEONEX | P2P Ecosystem v6.5</title>
+    <title>NEONEX | Social P2P Ecosystem v7.0</title>
     
+    <!-- SDKs de 2026 -->
+    <script src="https://cdn.jsdelivr.net"></script>
     <script src="https://cdnjs.cloudflare.com"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com"></script>
@@ -13,57 +15,60 @@
     
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #000; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; overflow: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 32px; }
-        .neon-border { border: 1px solid rgba(99, 102, 241, 0.3); box-shadow: 0 0 40px rgba(99, 102, 241, 0.15); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 32px; }
+        .neon-border { border: 1px solid rgba(99, 102, 241, 0.3); box-shadow: 0 0 50px rgba(99, 102, 241, 0.1); }
         .btn-neon { background: linear-gradient(90deg, #6366f1, #a855f7); border: none; cursor: pointer; color: white; font-weight: 800; transition: 0.4s; }
-        .btn-neon:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(168, 85, 247, 0.5); }
-        input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 18px; color: white; outline: none; width: 100%; font-size: 14px; }
+        .btn-neon:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(168, 85, 247, 0.4); }
+        input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; color: white; outline: none; width: 100%; font-size: 14px; }
         
-        /* Menu Lateral Estilizado */
-        #sideMenu { transform: translateX(-100%); transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        /* Side Menu (Hambúrguer) */
+        #sideMenu { transform: translateX(-100%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         #sideMenu.open { transform: translateX(0); }
-        .menu-item { display: flex; align-items: center; gap: 16px; padding: 16px; border-radius: 20px; transition: 0.3s; cursor: pointer; }
-        .menu-item:hover { background: rgba(255,255,255,0.05); color: #6366f1; }
+        .menu-item { display: flex; align-items: center; gap: 18px; padding: 18px; border-radius: 24px; transition: 0.3s; cursor: pointer; border: 1px solid transparent; }
+        .menu-item:hover { background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.2); color: #818cf8; }
         
-        .privacy-blur { filter: blur(10px); }
+        .privacy-blur { filter: blur(12px); pointer-events: none; }
     </style>
 </head>
 <body class="p-4">
 
     <!-- MENU LATERAL (SIDEBAR) -->
-    <div id="sideMenu" class="fixed inset-y-0 left-0 w-72 bg-black/95 backdrop-blur-3xl z-[100] border-r border-white/10 p-6 flex flex-col gap-8 shadow-2xl">
+    <div id="sideMenu" class="fixed inset-y-0 left-0 w-80 bg-black/95 backdrop-blur-3xl z-[60] border-r border-white/10 p-8 flex flex-col gap-8 shadow-2xl">
         <div class="flex justify-between items-center">
-            <h2 class="text-xl font-800 text-indigo-400">MENU</h2>
-            <button onclick="toggleMenu()" class="p-2 hover:bg-white/10 rounded-full"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div class="flex flex-col">
+                <h2 class="text-xl font-800 text-indigo-400 leading-none">NEONEX</h2>
+                <span class="text-[6px] uppercase tracking-[4px] text-gray-600 mt-1">Navegação Segura</span>
+            </div>
+            <button onclick="toggleMenu()" class="p-2 hover:bg-white/10 rounded-full transition-all"><i data-lucide="x" class="w-6 h-6"></i></button>
         </div>
 
-        <nav class="flex flex-col gap-2">
+        <nav class="flex flex-col gap-3">
             <div class="menu-item" onclick="openChat()">
-                <i data-lucide="message-square" class="w-5 h-5"></i>
-                <span class="text-sm font-bold uppercase tracking-widest">Chat P2P</span>
+                <i data-lucide="message-circle" class="w-5 h-5"></i>
+                <span class="text-xs font-bold uppercase tracking-widest">Chat P2P Cripto</span>
             </div>
-            <div class="menu-item" onclick="showReceiveModal()">
+            <div class="menu-item" onclick="showReceiveModal(); toggleMenu();">
                 <i data-lucide="qr-code" class="w-5 h-5"></i>
-                <span class="text-sm font-bold uppercase tracking-widest">Meu QR Code</span>
+                <span class="text-xs font-bold uppercase tracking-widest">Gerar QR Code</span>
             </div>
-            <div class="menu-item" onclick="alert('Breve: Staking NEX')">
-                <i data-lucide="trending-up" class="w-5 h-5 text-gray-600"></i>
-                <span class="text-sm font-bold uppercase tracking-widest text-gray-600">Investimentos</span>
+            <div class="menu-item" onclick="alert('Histórico Completo em breve...')">
+                <i data-lucide="history" class="w-5 h-5"></i>
+                <span class="text-xs font-bold uppercase tracking-widest">Extrato Social</span>
+            </div>
+            <div class="menu-item mt-10 text-red-400 hover:bg-red-500/10" onclick="location.reload()">
+                <i data-lucide="log-out" class="w-5 h-5"></i>
+                <span class="text-xs font-bold uppercase tracking-widest">Sair da Conta</span>
             </div>
         </nav>
-
-        <div class="mt-auto border-t border-white/5 pt-6 opacity-30 text-[8px] uppercase tracking-[4px] text-center">
-            Neonex Protocol v6.5
-        </div>
     </div>
 
     <!-- APP PRINCIPAL -->
-    <main id="mainApp" class="w-full max-w-md space-y-6 relative transition-all duration-500">
+    <main id="mainApp" class="w-full max-w-md space-y-6 relative transition-all duration-700">
         
-        <!-- Header com Menu Hamburguer no Canto Esquerdo -->
+        <!-- Header com Menu Hamburguer Esquerdo -->
         <header class="flex justify-between items-center px-2">
-            <button onclick="toggleMenu()" class="glass p-3 rounded-2xl border border-white/10 hover:bg-white/10 transition-all">
-                <i data-lucide="menu" class="w-6 h-6 text-white"></i>
+            <button onclick="toggleMenu()" class="glass p-3 rounded-2xl border border-white/10 hover:border-indigo-500/50 transition-all">
+                <i data-lucide="menu" class="w-6 h-6 text-indigo-400"></i>
             </button>
             
             <div class="text-center">
@@ -71,82 +76,88 @@
             </div>
 
             <div class="flex gap-2">
-                <button onclick="togglePrivacy()" class="glass p-3 rounded-2xl border border-white/10"><i id="privacyIcon" data-lucide="eye" class="w-5 h-5 text-gray-400"></i></button>
-                <button id="connectBtn" onclick="connectWallet()" class="glass px-4 py-2 text-[10px] font-800 uppercase tracking-widest border border-white/10">Conectar</button>
+                <button onclick="togglePrivacy()" class="glass p-3 rounded-2xl border border-white/10"><i id="privacyIcon" data-lucide="eye" class="w-5 h-5 text-gray-500"></i></button>
+                <button id="connectBtn" onclick="loginSocial()" class="glass px-4 py-2 text-[10px] font-800 uppercase tracking-widest border border-white/10 text-indigo-400">Login Social</button>
             </div>
         </header>
 
-        <!-- Card Principal -->
+        <!-- Card de Pagamento -->
         <section class="glass p-10 space-y-8 shadow-2xl relative overflow-hidden neon-border">
             <div class="text-center pb-8 border-b border-white/5">
-                <p class="text-gray-500 text-[9px] uppercase tracking-[5px] mb-3">Saldo Disponível</p>
-                <h2 id="balance" class="text-5xl font-bold tracking-tighter">0.00 <span class="text-indigo-500 text-xl font-light">POL</span></h2>
+                <p class="text-gray-500 text-[9px] uppercase tracking-[5px] mb-3">Patrimônio na Polygon</p>
+                <h2 id="balance" class="text-5xl font-bold tracking-tighter transition-all duration-500">0.00 <span class="text-indigo-500 text-xl font-light">POL</span></h2>
             </div>
 
             <div class="space-y-4">
-                <input type="text" id="target" placeholder="Destinatário (@nome)">
-                <input type="number" id="amount" placeholder="Valor" oninput="updateTotal()">
-                <div class="bg-white/5 rounded-3xl p-5 flex justify-between items-center">
-                    <span class="text-[9px] text-gray-500 font-bold uppercase tracking-widest">Taxa: 0.05 POL</span>
-                    <span id="totalDisplay" class="text-lg font-bold text-white">0.00 POL</span>
+                <input type="text" id="target" placeholder="Para: @usuario ou 0x...">
+                <input type="number" id="amount" placeholder="Valor do envio" oninput="updateTotal()">
+                <div class="bg-white/5 rounded-3xl p-5 flex justify-between items-center border border-white/5">
+                    <span class="text-[9px] text-gray-500 font-bold uppercase">Serviço NEONEX 0.05</span>
+                    <span id="totalDisplay" class="text-lg font-bold text-white transition-all">0.00 POL</span>
                 </div>
                 <button onclick="processPayment()" id="sendBtn" class="w-full btn-neon py-6 rounded-3xl text-xs uppercase tracking-[4px]">Confirmar Pagamento</button>
             </div>
         </section>
 
-        <!-- Atividade -->
-        <div id="activityList" class="px-2 space-y-3">
-             <p class="text-center text-[10px] text-gray-700 py-6 uppercase tracking-widest">Inicie uma transação</p>
-        </div>
+        <p class="text-center text-[7px] text-gray-700 uppercase tracking-[6px]">Blockchain Secured via Web3Auth</p>
     </main>
 
-    <!-- MODAL DO CHAT (GAVETA INTEGRADA) -->
-    <div id="chatModal" class="fixed inset-0 bg-black/98 backdrop-blur-3xl hidden flex-col p-4 z-[150] animate-in slide-in-from-bottom duration-500">
-        <header class="flex justify-between items-center p-4">
-            <button onclick="closeChat()" class="p-2"><i data-lucide="chevron-down" class="w-8 h-8 text-gray-500"></i></button>
-            <div class="text-center"><h4 class="text-sm font-800 uppercase tracking-widest">Chat Seguro P2P</h4></div>
+    <!-- MODAL CHAT (DENTRO DA GAVETA) -->
+    <div id="chatModal" class="fixed inset-0 bg-black/98 backdrop-blur-3xl hidden flex-col p-4 z-[70] animate-in slide-in-from-bottom duration-500">
+        <header class="flex justify-between items-center p-6">
+            <button onclick="closeChat()" class="p-2"><i data-lucide="chevron-down" class="w-8 h-8 text-gray-600"></i></button>
+            <h4 class="text-sm font-800 tracking-widest text-indigo-400 uppercase">Chat Seguro</h4>
             <div class="w-10"></div>
         </header>
-        <div id="chatContainer" class="flex-1 overflow-y-auto p-4 flex flex-col gap-4 text-xs">
-            <div class="bg-white/10 p-4 rounded-3xl self-start max-w-[80%]">Sistema: O chat é criptografado entre carteiras.</div>
+        <div id="chatContainer" class="flex-1 overflow-y-auto p-6 flex flex-col gap-4 text-xs font-medium">
+            <div class="bg-indigo-500/10 p-5 rounded-3xl self-start max-w-[85%] border border-white/5">
+                Bem-vindo ao Chat NEONEX. Todas as mensagens são criptografadas via carteira.
+            </div>
         </div>
-        <div class="p-4 glass rounded-[40px] mb-4 flex gap-2">
-            <input type="text" id="chatInput" placeholder="Mensagem..." class="bg-transparent border-none py-2">
+        <div class="p-4 glass rounded-[40px] mb-8 flex gap-3 mx-2 border-indigo-500/20 border">
+            <input type="text" id="chatInput" placeholder="Sua mensagem..." class="bg-transparent border-none py-2 text-xs">
             <button onclick="sendMsg()" class="btn-neon p-4 rounded-full"><i data-lucide="send" class="w-4 h-4"></i></button>
         </div>
     </div>
 
+    <!-- MODAL QR CODE -->
+    <div id="receiveModal" class="fixed inset-0 bg-black/98 backdrop-blur-3xl hidden items-center justify-center p-8 z-[70]">
+        <div class="glass w-full max-w-sm p-12 text-center space-y-8 neon-border">
+            <h3 class="text-2xl font-800 uppercase italic">Meu QR Code</h3>
+            <div id="qrcode" class="p-4 bg-white rounded-3xl inline-block mx-auto shadow-2xl"></div>
+            <p id="myAddressText" class="text-[9px] text-gray-500 font-mono break-all p-4 bg-white/5 rounded-2xl">Conecte sua conta primeiro</p>
+            <button onclick="closeReceiveModal()" class="w-full py-2 text-xs font-bold text-gray-400 uppercase tracking-widest">Fechar</button>
+        </div>
+    </div>
+
     <script>
-        lucide.createIcons();
-        let provider, address, isPrivate = false;
+        // --- COLOQUE SEU CLIENT ID ABAIXO ---
+        const clientId = " BOFsMwi_xRhtAKG4I_j1fv1Y4xbOVHKRnO_vatmFbjka_J5_lhRKBq83Y5oEPBYl2BMX2INnp1a10VOCzZGZ2vE "; 
+        
+        let web3auth, provider, address, isPrivate = false;
+
+        async function init() {
+            lucide.createIcons();
+            web3auth = new window.Modal.Web3Auth({
+                clientId,
+                chainConfig: { chainNamespace: "eip155", chainId: "0x89", rpcTarget: "https://polygon-rpc.com" },
+                web3AuthNetwork: "cyan",
+            });
+            await web3auth.initModal();
+        }
+
+        async function loginSocial() {
+            try {
+                const web3authProvider = await web3auth.connect();
+                provider = new ethers.BrowserProvider(web3authProvider);
+                const signer = await provider.getSigner();
+                address = await signer.getAddress();
+                document.getElementById('connectBtn').innerText = "@" + address.slice(2,8).toUpperCase();
+                updateBalance();
+            } catch (err) { console.error("Login cancelado"); }
+        }
 
         function toggleMenu() { document.getElementById('sideMenu').classList.toggle('open'); }
-
-        function openChat() { 
-            toggleMenu();
-            document.getElementById('chatModal').classList.replace('hidden', 'flex'); 
-        }
-        
-        function closeChat() { document.getElementById('chatModal').classList.replace('flex', 'hidden'); }
-
-        async function connectWallet() {
-            if (window.ethereum) {
-                provider = new ethers.BrowserProvider(window.ethereum);
-                const acc = await provider.send("eth_requestAccounts", []);
-                address = acc;
-                document.getElementById('connectBtn').innerText = address.slice(0,6)+"...";
-                updateBalance();
-            }
-        }
-
-        async function updateBalance() {
-            if (!address) return;
-            const balRaw = await provider.getBalance(address);
-            const bal = parseFloat(ethers.formatEther(balRaw)).toFixed(4);
-            document.getElementById('balance').innerHTML = `${bal} <span class="text-indigo-500 text-xl font-light">POL</span>`;
-            if(isPrivate) document.getElementById('balance').classList.add('privacy-blur');
-        }
-
         function togglePrivacy() {
             isPrivate = !isPrivate;
             document.getElementById('balance').classList.toggle('privacy-blur');
@@ -155,25 +166,45 @@
             lucide.createIcons();
         }
 
+        function openChat() { toggleMenu(); document.getElementById('chatModal').classList.replace('hidden', 'flex'); }
+        function closeChat() { document.getElementById('chatModal').classList.replace('flex', 'hidden'); }
+        function showReceiveModal() {
+            if(!address) return alert("Logue para ver seu QR Code");
+            document.getElementById('receiveModal').classList.replace('hidden', 'flex');
+            document.getElementById('qrcode').innerHTML = "";
+            new QRCode(document.getElementById("qrcode"), { text: address, width: 220, height: 220 });
+            document.getElementById('myAddressText').innerText = address;
+        }
+        function closeReceiveModal() { document.getElementById('receiveModal').classList.replace('flex', 'hidden'); }
+
+        async function updateBalance() {
+            const balRaw = await provider.getBalance(address);
+            document.getElementById('balance').innerHTML = `${parseFloat(ethers.formatEther(balRaw)).toFixed(4)} <span class="text-indigo-500 text-xl font-light">POL</span>`;
+        }
+
         function updateTotal() {
             const val = parseFloat(document.getElementById('amount').value) || 0;
             document.getElementById('totalDisplay').innerText = (val > 0 ? (val + 0.05).toFixed(4) : "0.00") + " POL";
         }
 
         function sendMsg() {
-            const input = document.getElementById('chatInput');
-            if(!input.value) return;
-            const html = `<div class="btn-neon p-4 rounded-3xl self-end max-w-[80%]">${input.value}</div>`;
+            const val = document.getElementById('chatInput').value;
+            if(!val) return;
+            const html = `<div class="btn-neon p-4 rounded-3xl self-end max-w-[85%] text-white shadow-xl">${val}</div>`;
             document.getElementById('chatContainer').insertAdjacentHTML('beforeend', html);
-            input.value = "";
+            document.getElementById('chatInput').value = "";
+            document.getElementById('chatContainer').scrollTop = document.getElementById('chatContainer').scrollHeight;
         }
 
         async function processPayment() {
+            if(!address) return alert("Faça Login Social primeiro!");
             const btn = document.getElementById('sendBtn');
-            btn.innerText = "ASSINANDO..."; btn.disabled = true;
-            // Lógica de fetch('/api/transfer') aqui...
-            setTimeout(() => { btn.innerText = "Sucesso!"; btn.disabled = false; }, 2000);
+            btn.innerText = "ESTABELECENDO CANAL..."; btn.disabled = true;
+            // Fetch para sua /api/transfer aqui...
+            setTimeout(() => { btn.innerText = "Confirmar Pagamento"; btn.disabled = false; alert("Transação Enviada!"); }, 3000);
         }
+
+        window.onload = init;
     </script>
 </body>
 </html>
