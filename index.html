@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEONEX | P2P Ecosystem</title>
+    <title>NEONEX | P2P Ecosystem v4.5</title>
     
-    <!-- Motores da Plataforma -->
     <script src="https://cdnjs.cloudflare.com"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com"></script>
@@ -14,96 +13,108 @@
     
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #000; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; overflow-x: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; }
-        .neon-border { border: 1px solid rgba(99, 102, 241, 0.3); box-shadow: 0 0 20px rgba(99, 102, 241, 0.1); }
-        .btn-neon { background: linear-gradient(90deg, #6366f1, #a855f7); transition: 0.3s; border: none; cursor: pointer; color: white; }
-        .btn-neon:hover { transform: scale(1.02); box-shadow: 0 0 25px rgba(168, 85, 247, 0.4); }
-        input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 16px; color: white; outline: none; width: 100%; transition: 0.3s; }
-        #qrcode img { margin: 0 auto; border-radius: 12px; border: 4px solid white; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 28px; }
+        .neon-border { border: 1px solid rgba(99, 102, 241, 0.3); box-shadow: 0 0 30px rgba(99, 102, 241, 0.1); }
+        .btn-neon { background: linear-gradient(90deg, #6366f1, #a855f7); transition: 0.4s; border: none; cursor: pointer; color: white; font-weight: 800; }
+        .btn-neon:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4); }
+        input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 18px; color: white; outline: none; width: 100%; transition: 0.3s; font-size: 14px; }
+        input:focus { border-color: #6366f1; background: rgba(255,255,255,0.08); box-shadow: 0 0 15px rgba(99, 102, 241, 0.1); }
+        .activity-card { background: rgba(255,255,255,0.02); border-radius: 18px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .activity-card:hover { background: rgba(255,255,255,0.05); }
+        #qrcode img { margin: 0 auto; border-radius: 14px; border: 6px solid white; }
     </style>
 </head>
 <body class="p-4">
 
     <main class="w-full max-w-md space-y-6 relative z-10">
-        <!-- Header -->
+        <!-- Header Futurista -->
         <header class="flex justify-between items-center px-2">
-            <div>
-                <h1 class="text-2xl font-800 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 leading-none text-[32px]">NEONEX</h1>
-                <p class="text-[8px] text-gray-500 uppercase tracking-[4px]">Blockchain P2P v4.0</p>
+            <div class="flex flex-col">
+                <h1 class="text-3xl font-800 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 leading-none">NEONEX</h1>
+                <span class="text-[7px] text-indigo-500/60 uppercase tracking-[5px] mt-1 font-bold">Protocolo P2P Ativo</span>
             </div>
             <div class="flex gap-2">
-                <button onclick="showReceiveModal()" class="glass p-3 rounded-full hover:bg-white/5 border border-white/10">
-                    <i data-lucide="qr-code" class="w-4 h-4 text-indigo-400"></i>
+                <button onclick="showReceiveModal()" class="glass p-3 rounded-2xl hover:bg-white/10 border border-white/10 transition-all group">
+                    <i data-lucide="qr-code" class="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform"></i>
                 </button>
-                <button id="connectBtn" onclick="connectWallet()" class="glass px-4 py-2 text-[10px] font-bold uppercase border border-white/10 hover:bg-white/5 transition-all">
+                <button id="connectBtn" onclick="connectWallet()" class="glass px-5 py-2 text-[10px] font-800 uppercase border border-white/10 hover:border-indigo-500/50 transition-all tracking-widest">
                     Conectar
                 </button>
             </div>
         </header>
 
-        <!-- Registro @Nome -->
-        <section id="regSection" class="glass p-5 hidden neon-border">
+        <!-- Identidade e Registro -->
+        <section id="regSection" class="glass p-5 hidden neon-border animate-in fade-in slide-in-from-top-4 duration-500">
             <div class="flex items-center gap-2 mb-3">
-                <i data-lucide="at-sign" class="w-4 h-4 text-indigo-400"></i>
-                <p class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider">Registrar Identidade</p>
+                <div class="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse"></div>
+                <p class="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">Configurar ID @Neonex</p>
             </div>
             <div class="flex gap-2">
-                <input type="text" id="newUsername" placeholder="@usuario" class="text-sm py-3">
-                <button onclick="registerName()" class="btn-neon px-6 rounded-xl text-[10px] font-bold">CRIAR</button>
+                <input type="text" id="newUsername" placeholder="@seu_nome" class="py-3">
+                <button onclick="registerName()" class="btn-neon px-6 rounded-xl text-[10px]">CRIAR</button>
             </div>
         </section>
 
-        <!-- Card Principal -->
-        <section class="glass p-8 space-y-6 shadow-2xl">
-            <div class="text-center pb-6 border-b border-white/5">
-                <p class="text-gray-400 text-[10px] uppercase tracking-[3px] mb-2">Saldo em Conta</p>
-                <h2 id="balance" class="text-4xl font-bold tracking-tight">0.00 <span class="text-indigo-500 text-lg font-light">POL</span></h2>
+        <!-- Card Principal de Saldo e Envio -->
+        <section class="glass p-8 space-y-6 shadow-2xl relative overflow-hidden">
+            <div class="text-center pb-6 border-b border-white/5 relative z-10">
+                <p class="text-gray-500 text-[9px] uppercase tracking-[4px] mb-3">Disponível na Polygon</p>
+                <h2 id="balance" class="text-4xl font-bold tracking-tighter">0.00 <span class="text-indigo-500 text-lg font-light">POL</span></h2>
             </div>
 
-            <div class="space-y-4">
+            <div class="space-y-4 relative z-10">
                 <input type="text" id="target" placeholder="Para: @usuario ou 0x...">
-                <input type="number" id="amount" placeholder="Valor" oninput="updateTotal()">
+                <input type="number" id="amount" placeholder="Quanto deseja enviar?" oninput="updateTotal()">
                 
-                <div class="bg-white/5 rounded-2xl p-4 space-y-2 border border-white/5">
-                    <div class="flex justify-between text-[10px] text-gray-500 font-bold">
-                        <span>TAXA NEONEX</span>
-                        <span class="text-indigo-400">+ 0.05 POL</span>
+                <div class="bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-white/5">
+                    <div>
+                        <p class="text-[9px] text-gray-500 uppercase font-bold tracking-widest">Taxa de Rede</p>
+                        <p class="text-xs text-indigo-400 font-bold">0.05 POL</p>
                     </div>
-                    <div class="flex justify-between text-sm font-bold pt-2 border-t border-white/10">
-                        <span>TOTAL</span>
-                        <span id="totalDisplay" class="text-purple-400">0.00 POL</span>
+                    <div class="text-right">
+                        <p class="text-[9px] text-gray-500 uppercase font-bold tracking-widest">Total</p>
+                        <p id="totalDisplay" class="text-sm font-bold text-white">0.00 POL</p>
                     </div>
                 </div>
                 
-                <button id="sendBtn" onclick="processPayment()" class="w-full btn-neon py-5 rounded-2xl font-800 text-xs uppercase tracking-[3px]">
+                <button id="sendBtn" onclick="processPayment()" class="w-full btn-neon py-5 rounded-2xl text-xs uppercase tracking-[3px]">
                     Enviar Pagamento
                 </button>
+            </div>
+            <!-- Brilho de Fundo -->
+            <div class="absolute -top-24 -left-24 w-48 h-48 bg-indigo-600/10 blur-[80px] rounded-full"></div>
+        </section>
+
+        <!-- Histórico de Atividade -->
+        <section class="space-y-4">
+            <h4 class="text-[10px] text-gray-500 uppercase font-bold tracking-[3px] ml-2">Atividade Recente</h4>
+            <div id="activityList" class="space-y-2">
+                <p class="text-center text-[10px] text-gray-700 py-4 italic">Nenhuma transação encontrada</p>
             </div>
         </section>
     </main>
 
-    <!-- MODAL RECEBER (QR CODE) -->
-    <div id="receiveModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="glass w-full max-w-sm p-8 text-center space-y-6 neon-border">
-            <h3 class="text-xl font-800 uppercase tracking-tighter">Receber via NEONEX</h3>
-            <div id="qrcode" class="p-4 bg-white rounded-2xl inline-block mx-auto"></div>
-            <p id="myAddressText" class="text-[9px] text-gray-500 font-mono break-all px-4">Conecte sua carteira</p>
-            <button onclick="closeReceiveModal()" class="w-full py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Fechar</button>
+    <!-- MODAIS (RECEBER / COMPROVANTE) -->
+    <div id="receiveModal" class="fixed inset-0 bg-black/95 backdrop-blur-xl hidden items-center justify-center p-6 z-50">
+        <div class="glass w-full max-w-sm p-10 text-center space-y-6 neon-border">
+            <h3 class="text-xl font-800 tracking-tighter uppercase">Meu QR Code P2P</h3>
+            <div id="qrcode" class="p-4 bg-white rounded-3xl inline-block mx-auto shadow-2xl"></div>
+            <p id="myAddressText" class="text-[9px] text-gray-500 font-mono break-all bg-white/5 p-3 rounded-xl">---</p>
+            <button onclick="closeReceiveModal()" class="w-full py-4 text-[10px] font-bold text-indigo-400 uppercase tracking-widest border-t border-white/5">Fechar</button>
         </div>
     </div>
 
-    <!-- MODAL COMPROVANTE -->
-    <div id="receiptModal" class="fixed inset-0 bg-black/95 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="glass w-full max-w-sm p-8 text-center space-y-6 neon-border">
-            <div class="flex justify-center"><div class="bg-green-500/20 p-4 rounded-full"><i data-lucide="check-circle" class="w-12 h-12 text-green-400"></i></div></div>
-            <h3 class="text-xl font-800">Pagamento Concluído</h3>
-            <div class="bg-black/40 rounded-3xl p-5 space-y-4 text-left border border-white/5 text-xs">
-                <div class="flex justify-between"><span>Para:</span><span id="rec-to" class="font-bold text-indigo-400">@usuario</span></div>
-                <div class="flex justify-between"><span>Valor:</span><span id="rec-amt" class="font-bold">0.00 POL</span></div>
-                <div class="pt-3 border-t border-white/10"><span class="text-gray-500 block text-[9px]">HASH</span><div id="rec-hash" class="text-[8px] break-all opacity-50">0x...</div></div>
+    <div id="receiptModal" class="fixed inset-0 bg-black/95 backdrop-blur-xl hidden items-center justify-center p-6 z-50">
+        <div class="glass w-full max-w-sm p-10 text-center space-y-6 border-green-500/30 border">
+            <div class="flex justify-center"><div class="bg-green-500/10 p-5 rounded-full"><i data-lucide="check-circle" class="w-12 h-12 text-green-400"></i></div></div>
+            <h3 class="text-2xl font-800 italic">Pago!</h3>
+            <div class="bg-white/5 rounded-3xl p-6 space-y-4 text-left border border-white/10 text-xs">
+                <div class="flex justify-between"><span>Destinatário:</span><span id="rec-to" class="font-bold text-indigo-400">@---</span></div>
+                <div class="flex justify-between"><span>Valor Total:</span><span id="rec-amt" class="font-bold">0.00 POL</span></div>
+                <div class="pt-3 border-t border-white/10"><span class="text-gray-600 block text-[8px] mb-1 uppercase">Blockchain Hash</span><div id="rec-hash" class="text-[8px] break-all opacity-40 font-mono">0x...</div></div>
             </div>
-            <button onclick="shareReceipt()" class="w-full btn-neon py-4 rounded-xl text-[10px] font-800 uppercase flex items-center justify-center gap-2"><i data-lucide="share-2" class="w-4 h-4"></i> COMPARTILHAR</button>
-            <button onclick="closeReceipt()" class="text-xs text-gray-500 font-bold uppercase">Sair</button>
+            <button onclick="shareReceipt()" class="w-full btn-neon py-4 rounded-2xl text-[10px] flex items-center justify-center gap-2 uppercase tracking-widest"><i data-lucide="share-2" class="w-4 h-4"></i> Compartilhar</button>
+            <button onclick="closeReceipt()" class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Concluído</button>
         </div>
     </div>
 
@@ -140,14 +151,14 @@
                 body: JSON.stringify({ action: 'register', username: user, wallet: address })
             });
             const data = await res.json();
-            data.success ? alert("Identidade Criada!") : alert(data.error);
+            data.success ? alert("Identidade Digital Ativa!") : alert(data.error);
         }
 
         function showReceiveModal() {
-            if(!address) return alert("Conecte a carteira!");
+            if(!address) return alert("Conecte a carteira primeiro!");
             document.getElementById('receiveModal').classList.replace('hidden', 'flex');
             document.getElementById('qrcode').innerHTML = "";
-            new QRCode(document.getElementById("qrcode"), { text: address, width: 200, height: 200 });
+            new QRCode(document.getElementById("qrcode"), { text: address, width: 220, height: 220, colorDark : "#000000", colorLight : "#ffffff" });
             document.getElementById('myAddressText').innerText = address;
         }
 
@@ -157,8 +168,7 @@
             const to = document.getElementById('target').value;
             const amount = document.getElementById('amount').value;
             const btn = document.getElementById('sendBtn');
-            btn.innerText = "PROCESSANDO...";
-            btn.disabled = true;
+            btn.innerText = "PROCESSANDO..."; btn.disabled = true;
 
             try {
                 const res = await fetch('/api/transfer', {
@@ -168,22 +178,43 @@
                 });
                 const data = await res.json();
                 if(data.success) {
+                    addActivity(to, amount);
                     document.getElementById('rec-to').innerText = to;
-                    document.getElementById('rec-amt').innerText = amount + " POL";
+                    document.getElementById('rec-amt').innerText = (parseFloat(amount) + 0.05).toFixed(4) + " POL";
                     document.getElementById('rec-hash').innerText = data.hash;
                     document.getElementById('receiptModal').classList.replace('hidden', 'flex');
                     updateBalance();
+                    lucide.createIcons();
                 } else { alert(data.error); }
-            } catch (err) { alert("Erro de rede."); }
+            } catch (err) { alert("Erro de comunicação com o servidor."); }
             btn.innerText = "Enviar Pagamento"; btn.disabled = false;
+        }
+
+        function addActivity(to, amount) {
+            const list = document.getElementById('activityList');
+            if(list.innerText.includes("Nenhuma")) list.innerHTML = "";
+            const html = `
+                <div class="activity-card flex justify-between items-center animate-in fade-in slide-in-from-right-4 duration-500">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-indigo-500/10 p-2 rounded-full"><i data-lucide="arrow-up-right" class="w-4 h-4 text-indigo-400"></i></div>
+                        <div><p class="text-[11px] font-bold text-white">Enviado para ${to}</p><p class="text-[8px] text-gray-500 uppercase font-bold">Confirmado na Polygon</p></div>
+                    </div>
+                    <div class="text-right"><p class="text-[11px] font-bold text-white">-${amount} POL</p><p class="text-[8px] text-green-500 font-bold uppercase">Sucesso</p></div>
+                </div>
+            `;
+            list.insertAdjacentHTML('afterbegin', html);
+            lucide.createIcons();
         }
 
         function closeReceipt() { document.getElementById('receiptModal').classList.replace('flex', 'hidden'); }
 
         function shareReceipt() {
-            const text = `Enviado ${document.getElementById('rec-amt').innerText} via NEONEX! Hash: ${document.getElementById('rec-hash').innerText}`;
-            navigator.clipboard.writeText(text); alert("Copiado!");
+            const hash = document.getElementById('rec-hash').innerText;
+            const text = `💰 Acabei de enviar um pagamento via NEONEX P2P!\n🚀 Valor: ${document.getElementById('rec-amt').innerText}\n🔗 Hash: ${hash}`;
+            navigator.clipboard.writeText(text); alert("Link do comprovante copiado!");
         }
+
+        window.onload = () => lucide.createIcons();
     </script>
 </body>
 </html>
