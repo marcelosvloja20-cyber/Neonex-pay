@@ -65,7 +65,15 @@
             <h1 class="text-2xl font-800 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">NEONEX</h1>
             <button id="connectBtn" onclick="loginSocial()" class="glass px-4 py-2 text-[10px] font-800 uppercase tracking-widest border border-white/10 text-indigo-400">Acessar</button>
         </header>
+<select id="network" onchange="switchNetwork()" class="mb-4 bg-black text-white p-2 rounded">
 
+<option value="polygon">Polygon</option>
+
+<option value="ethereum">Ethereum</option>
+
+<option value="bsc">BNB Chain</option>
+
+</select>
         <section class="glass p-10 text-center neon-border relative overflow-hidden">
             <p class="text-gray-500 text-[9px] uppercase tracking-[5px] mb-3">Saldo Disponível</p>
             <h2 id="balance" class="text-5xl font-bold tracking-tighter">0.00 <span class="text-indigo-500 text-xl font-light">POL</span></h2>
