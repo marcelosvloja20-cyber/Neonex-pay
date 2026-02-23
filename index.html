@@ -164,7 +164,36 @@
             btn.innerText = "SINCRO-AI..."; btn.disabled = true;
             setTimeout(() => { btn.innerText = "Confirmar Pagamento"; btn.disabled = false; alert("Processado com sucesso!"); }, 3000);
         }
+let currentChain = "polygon";
 
+const RPCS = {
+
+polygon: "https://polygon-rpc.com",
+
+ethereum: "https://rpc.ankr.com/eth",
+
+bsc: "https://rpc.ankr.com/bsc"
+
+};
+
+const SYMBOLS = {
+
+polygon: "POL",
+
+ethereum: "ETH",
+
+bsc: "BNB"
+
+};
+
+async function switchNetwork(){
+
+currentChain =
+document.getElementById("network").value;
+
+updateBalance();
+
+}
         window.onload = init;
     </script>
 </body>
