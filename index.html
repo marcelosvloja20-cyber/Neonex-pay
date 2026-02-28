@@ -3,98 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEONEX | P2P Blockchain</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Corax | P2P Blockchain</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --bg: #000;
-            --card: #0f0f15;
-            --violet: #8b5cf6;
-            --blue: #3b82f6;
-            --gradient: linear-gradient(135deg, #8b5cf6, #3b82f6);
-            --text: #e0e7ff;
-            --muted: #94a3b8;
-            --glass: rgba(139,92,246,0.06);
+            --bg: #0B0B0F;
+            --card: #111116;
+            --accent: #0A84FF; /* Azul elétrico */
+            --accent-green: #00A676; /* Verde esmeralda sutil */
+            --text: #FFFFFF;
+            --muted: #A0AEC0;
+            --border: rgba(10,132,255,0.12);
         }
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
-        body { background:var(--bg); color:var(--text); min-height:100vh; padding-bottom:90px; }
+        body { background:var(--bg); color:var(--text); min-height:100vh; padding:80px 0 100px; }
 
-        header { 
-            position:fixed; top:0; left:0; right:0; 
+        header {
+            position:fixed; top:0; left:0; right:0; z-index:1100;
             display:flex; justify-content:space-between; align-items:center;
-            padding:16px 20px; background:rgba(0,0,0,0.7); backdrop-filter:blur(12px);
-            z-index:1100; max-width:500px; margin:0 auto;
+            padding:16px 20px; background:rgba(11,11,15,0.85); backdrop-filter:blur(12px);
+            max-width:480px; margin:0 auto;
         }
-        .hamburger { cursor:pointer; display:flex; flex-direction:column; gap:5px; }
-        .hamburger span { width:24px; height:2px; background:var(--violet); box-shadow:0 0 8px var(--violet); border-radius:1px; }
-        .login-btn { background:var(--gradient); color:white; border:none; padding:8px 16px; border-radius:24px; font-size:0.8rem; font-weight:600; cursor:pointer; box-shadow:0 0 12px rgba(139,92,246,0.3); }
+        .menu-btn { cursor:pointer; }
+        .menu-btn span { display:block; width:24px; height:2px; background:var(--accent); margin:5px 0; border-radius:1px; box-shadow:0 0 6px rgba(10,132,255,0.4); }
+        .login-btn { background:var(--accent); color:#fff; border:none; padding:8px 16px; border-radius:20px; font-size:0.8rem; font-weight:600; cursor:pointer; box-shadow:0 4px 12px rgba(10,132,255,0.3); }
 
-        .logo { text-align:center; margin:80px auto 32px; max-width:400px; }
-        .logo h1 { 
-            background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-            font-size:2.2rem; font-weight:800; letter-spacing:4px; text-shadow:0 0 16px rgba(139,92,246,0.4);
+        .header-logo { text-align:center; margin:24px 0 32px; }
+        .header-logo h1 {
+            font-size:2.2rem; font-weight:800; letter-spacing:3px;
+            background:linear-gradient(135deg, #0A84FF, #FFFFFF); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            text-shadow:0 0 12px rgba(10,132,255,0.3);
         }
-        .logo span { color:var(--muted); font-size:0.7rem; letter-spacing:2px; }
+        .header-logo span { font-size:0.65rem; color:var(--muted); letter-spacing:1.5px; }
 
-        .container { padding:0 20px; max-width:400px; margin:0 auto; }
-        .wallet-card { 
-            background:var(--card); border-radius:24px; padding:28px 20px; 
-            border:1px solid rgba(59,130,246,0.1); text-align:center;
+        .main-content { padding:0 20px; max-width:400px; margin:0 auto; }
+        .wallet-card {
+            background:var(--card); border-radius:20px; padding:28px 20px;
+            border:1px solid var(--border); text-align:center;
         }
         .label { font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:block; }
-        .balance { font-size:2.8rem; font-weight:800; margin:12px 0 32px; letter-spacing:-1px; }
-        input { 
-            width:100%; background:rgba(20,20,40,0.6); border:1px solid rgba(139,92,246,0.15);
-            border-radius:14px; padding:14px 16px; color:white; font-size:1rem; margin-bottom:20px; outline:none;
+        .balance { font-size:2.8rem; font-weight:800; margin:8px 0 32px; letter-spacing:-1px; }
+        input {
+            width:100%; background:rgba(20,20,40,0.6); border:1px solid var(--border);
+            border-radius:12px; padding:14px 16px; color:var(--text); font-size:1rem; margin-bottom:20px;
+            outline:none; transition:border 0.2s;
         }
-        input:focus { border-color:var(--blue); box-shadow:0 0 10px rgba(59,130,246,0.2); }
-        .fee { display:flex; justify-content:space-between; font-size:0.8rem; color:var(--muted); margin:10px 0; }
-        .fee strong { color:var(--violet); }
-        .btn { 
-            width:100%; background:var(--gradient); color:white; border:none; padding:16px; 
-            border-radius:18px; font-weight:700; font-size:0.95rem; cursor:pointer; 
-            box-shadow:0 0 16px rgba(139,92,246,0.4); transition:transform 0.2s;
+        input:focus { border-color:var(--accent); box-shadow:0 0 8px rgba(10,132,255,0.2); }
+        .fee-info { display:flex; justify-content:space-between; font-size:0.8rem; color:var(--muted); margin:10px 0; }
+        .total { font-weight:600; color:var(--text); }
+        .btn-send {
+            width:100%; background:var(--accent); color:white; border:none;
+            padding:16px; border-radius:16px; font-size:0.95rem; font-weight:600;
+            cursor:pointer; box-shadow:0 6px 16px rgba(10,132,255,0.35); transition:0.2s;
         }
-        .btn:hover { transform:translateY(-1px); }
+        .btn-send:hover { transform:translateY(-2px); }
 
-        .sidebar { 
-            position:fixed; top:0; left:-320px; width:300px; height:100%; 
-            background:rgba(15,15,35,0.95); backdrop-filter:blur(20px); border-right:1px solid rgba(139,92,246,0.1);
-            z-index:1050; padding:60px 20px 20px; transition:left 0.4s;
+        .sidebar {
+            position:fixed; top:0; left:-300px; width:300px; height:100%;
+            background:rgba(17,17,22,0.96); backdrop-filter:blur(20px);
+            border-right:1px solid var(--border); z-index:1050;
+            padding:60px 20px 20px; transition:left 0.3s ease;
         }
         .sidebar.active { left:0; }
-        .benefit { background:rgba(139,92,246,0.08); border-radius:16px; padding:14px; margin-bottom:20px; text-align:center; }
-        .benefit-label { font-size:0.7rem; color:var(--muted); }
-        .benefit-val { font-size:1.3rem; font-weight:700; color:var(--violet); }
-
-        .bottom-nav { 
-            position:fixed; bottom:0; left:0; right:0; background:rgba(15,15,35,0.9); backdrop-filter:blur(12px);
-            border-top:1px solid rgba(59,130,246,0.1); padding:10px 0; z-index:1000;
+        .sidebar-section { margin-bottom:24px; }
+        .benefit-box {
+            background:rgba(10,132,255,0.08); border:1px solid var(--border);
+            border-radius:16px; padding:16px; text-align:center;
         }
-        .tabs { display:flex; justify-content:space-around; max-width:500px; margin:0 auto; }
-        .tab { color:var(--muted); text-align:center; text-decoration:none; font-size:0.7rem; }
-        .tab.active { color:var(--violet); }
-        .tab i { font-size:22px; display:block; margin-bottom:2px; }
+        .benefit-label { font-size:0.7rem; color:var(--muted); margin-bottom:4px; }
+        .benefit-value { font-size:1.4rem; font-weight:700; color:var(--accent-green); }
 
-        .status { margin:16px 0; font-size:0.6rem; color:#475569; text-align:center; }
+        .bottom-nav {
+            position:fixed; bottom:0; left:0; right:0; z-index:1000;
+            background:rgba(17,17,22,0.92); backdrop-filter:blur(12px);
+            border-top:1px solid var(--border); padding:10px 0;
+        }
+        .nav-tabs { display:flex; justify-content:space-around; max-width:480px; margin:0 auto; }
+        .nav-item { color:var(--muted); text-align:center; font-size:0.7rem; text-decoration:none; }
+        .nav-item.active { color:var(--accent); }
+        .nav-item i { font-size:22px; display:block; margin-bottom:2px; }
+
+        .status { font-size:0.6rem; color:var(--muted); text-align:center; margin:16px 0; }
+
+        /* Corvo geométrico minimalista (placeholder SVG simples) */
+        .corvo-icon { width:40px; height:40px; margin:0 auto 12px; display:block; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('active')">
+        <div class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('active')">
             <span></span><span></span><span></span>
         </div>
-        <button class="login-btn">Login Social</button>
+        <button class="login-btn">Login / Conectar</button>
     </header>
 
-    <div class="logo">
-        <h1>NEONEX</h1>
-        <span>BLOCKCHAIN P2P V3.0</span>
+    <div class="header-logo">
+        <h1>Corax</h1>
+        <span>A nova camada do dinheiro</span>
     </div>
 
-    <div class="container">
+    <div class="main-content">
         <div class="wallet-card">
             <span class="label">Saldo Disponível (Polygon)</span>
             <div class="balance">0.00 POL</div>
@@ -103,47 +113,57 @@
             <input type="text" placeholder="@usuario ou 0x...">
 
             <span class="label">Valor para Enviar</span>
-            <input type="number" id="val" placeholder="0.00" oninput="document.getElementById('total').textContent = (parseFloat(this.value)||0 + 0.05).toFixed(2) + ' POL'">
+            <input type="number" id="amount" placeholder="0.00" oninput="updateTotal()">
 
-            <div class="fee">
-                <span>Taxa NEONEX</span>
-                <span><strong>+0.05 POL</strong></span>
+            <div class="fee-info">
+                <span>Taxa Corax</span>
+                <span>+0.05 POL</span>
             </div>
-            <div class="fee" style="font-weight:600;">
-                <span>Total a Debitar</span>
+            <div class="fee-info total">
+                <span>Total</span>
                 <span id="total">0.05 POL</span>
             </div>
 
-            <button class="btn">Confirmar Envio P2P</button>
+            <button class="btn-send">Confirmar Envio P2P</button>
         </div>
 
-        <div class="status">Conecte sua wallet para começar</div>
+        <div class="status">Conecte sua wallet para ver saldo real</div>
     </div>
 
     <!-- Sidebar com benefícios -->
     <div id="sidebar" class="sidebar">
-        <div class="benefit">
-            <div class="benefit-label">Rendimento Diário</div>
-            <div class="benefit-val">R$ 0,0000</div>
-            <div style="font-size:0.75rem;color:var(--muted);">+8.4% APY Automático</div>
+        <div class="sidebar-section">
+            <div class="benefit-box">
+                <div class="benefit-label">Rendimento Diário</div>
+                <div class="benefit-value">R$ 0,0000</div>
+                <div style="font-size:0.75rem; color:var(--muted);">+8.4% APY Automático</div>
+            </div>
         </div>
-        <div class="benefit">
-            <div class="benefit-label">Cashback Acumulado</div>
-            <div class="benefit-val">R$ 45,20</div>
-            <button style="background:var(--blue);color:white;border:none;padding:6px 12px;border-radius:10px;font-size:0.8rem;margin-top:8px;cursor:pointer;">Resgatar</button>
+        <div class="sidebar-section">
+            <div class="benefit-box">
+                <div class="benefit-label">Cashback Acumulado</div>
+                <div class="benefit-value">R$ 45,20</div>
+                <button style="background:var(--accent-green); color:#fff; border:none; padding:6px 12px; border-radius:10px; font-size:0.8rem; margin-top:8px; cursor:pointer;">Resgatar</button>
+            </div>
         </div>
-        <!-- Outros itens sidebar aqui -->
+        <!-- Adicione chat, config, etc. aqui -->
     </div>
 
     <nav class="bottom-nav">
-        <div class="tabs">
-            <a href="#" class="tab active"><i data-lucide="home"></i><span>Home</span></a>
-            <a href="#" class="tab"><i data-lucide="send"></i><span>Pagar</span></a>
-            <a href="#" class="tab"><i data-lucide="message-circle"></i><span>Chat</span></a>
-            <a href="#" class="tab"><i data-lucide="wallet"></i><span>Carteira</span></a>
+        <div class="nav-tabs">
+            <a href="#" class="nav-item active"><i data-lucide="home"></i><span>Home</span></a>
+            <a href="#" class="nav-item"><i data-lucide="send"></i><span>Pagar</span></a>
+            <a href="#" class="nav-item"><i data-lucide="message-circle"></i><span>Chat</span></a>
+            <a href="#" class="nav-item"><i data-lucide="wallet"></i><span>Carteira</span></a>
         </div>
     </nav>
 
-    <script>lucide.createIcons();</script>
+    <script>
+        lucide.createIcons();
+        function updateTotal() {
+            const val = parseFloat(document.getElementById('amount').value) || 0;
+            document.getElementById('total').textContent = (val + 0.05).toFixed(2) + ' POL';
+        }
+    </script>
 </body>
 </html>
